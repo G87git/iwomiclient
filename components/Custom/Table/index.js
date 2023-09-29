@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AntTable from "antd/lib/table";
-import Loader from 'react-loader-advanced';
-import { Spin } from 'antd';
+import Loader from "react-loader-advanced";
+import { Spin } from "antd";
 import tableExport from "antd-table-export";
 
 import { Button, Dropdown, Input, Menu, Select } from "antd";
@@ -15,7 +15,6 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 
-
 export default function Table(prob) {
   let columns;
   let dataSource;
@@ -27,21 +26,22 @@ export default function Table(prob) {
     }));
   }
 
-  const [searchText, setSearchText] = useState('');
-  const [data, setData] = useState(dataSource)
-  const [filteredData, setFilteredData] = useState(data)
+  const [searchText, setSearchText] = useState("");
+  const [data, setData] = useState(dataSource);
+  const [filteredData, setFilteredData] = useState(data);
 
   useEffect(() => {
     setFilteredData(filterData(data, searchText));
   }, [data, searchText]);
 
-  
   const filterData = (data, query) => {
     if (!query) return data;
 
     return data.filter((item) =>
       Object.values(item).some((value) =>
-        value == null? "" : value.toString().toLowerCase().includes(query.toLowerCase())
+        value == null
+          ? ""
+          : value.toString().toLowerCase().includes(query.toLowerCase())
       )
     );
   };
@@ -58,7 +58,6 @@ export default function Table(prob) {
       <Menu.Item icon={<FilePptFilled />}>CSV</Menu.Item> */}
     </Menu>
   );
-
 
   function exportExcel() {
     const exportInstance = new tableExport(prob.dataSource, columns);
@@ -82,7 +81,11 @@ export default function Table(prob) {
           <div className="flex flex-wrap gap-2 items-center">
             {prob.actions}
             <Dropdown overlay={menu} trigger={["click"]}>
-              <Button icon={<DownloadOutlined />} type="primary" className="!bg-primary !border-primary !h-[42px] !rounded">
+              <Button
+                icon={<DownloadOutlined />}
+                type="primary"
+                className="!bg-primary !border-primary !h-[42px] !rounded"
+              >
                 Export
               </Button>
             </Dropdown>
@@ -91,15 +94,21 @@ export default function Table(prob) {
       </>
     );
   }
-  
-    const spinner = <span className="!items-center "> <Spin/></span>;
+
+  const spinner = (
+    <span className="!items-center ">
+      {" "}
+      <Spin />
+    </span>
+  );
 
   return (
     <div className="space-y-2">
-      {prob.showFilter?.filter && (prob.showFilter?.filterValue)}
-      {prob.optional? optionalParam():[]}
+      {prob.showFilter?.filter && prob.showFilter?.filterValue}
+      {prob.optional ? optionalParam() : []}
       <Loader show={prob.loader} message={spinner} contentBlur={0.1}>
         <AntTable
+<<<<<<< Updated upstream
             columns={columns}
             // dataSource={dataSource}
             dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
@@ -108,6 +117,18 @@ export default function Table(prob) {
             loading={false}
             style={{overflowX: 'auto'}}
             showSorterTooltip={false}
+=======
+          columns={columns}
+          // dataSource={dataSource}
+          dataSource={filteredData?.map((item, index) => ({
+            ...item,
+            index: index + 1,
+          }))}
+          size="middle"
+          loading={false}
+          style={{ overflowX: "auto" }}
+          showSorterTooltip={false}
+>>>>>>> Stashed changes
         />
       </Loader>
     </div>
