@@ -36,7 +36,7 @@ const validator = yup.object({
   acccount: yup.string()
 });
 
-export default function ConfigurationHistory() {
+export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
   const [state, dispatch] = useReducer(reducer, {});
   const [search, setSearch] = useState("")
