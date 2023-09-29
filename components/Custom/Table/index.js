@@ -108,7 +108,6 @@ export default function Table(prob) {
       {prob.optional ? optionalParam() : []}
       <Loader show={prob.loader} message={spinner} contentBlur={0.1}>
         <AntTable
-<<<<<<< Updated upstream
             columns={columns}
             // dataSource={dataSource}
             dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
@@ -117,18 +116,6 @@ export default function Table(prob) {
             loading={false}
             style={{overflowX: 'auto'}}
             showSorterTooltip={false}
-=======
-          columns={columns}
-          // dataSource={dataSource}
-          dataSource={filteredData?.map((item, index) => ({
-            ...item,
-            index: index + 1,
-          }))}
-          size="middle"
-          loading={false}
-          style={{ overflowX: "auto" }}
-          showSorterTooltip={false}
->>>>>>> Stashed changes
         />
       </Loader>
     </div>
