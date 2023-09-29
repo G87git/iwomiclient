@@ -171,6 +171,7 @@ export default function TransferHistory() {
       title: "Sender",
       dataIndex: "tabcd",
       key: "createUser",
+      filter: true,
       defaultSortOrder: "descend",
       sorter: (a, b) => a.tabcd - b.tabcd,
     },
@@ -178,6 +179,7 @@ export default function TransferHistory() {
       title: "Receiver",
       dataIndex: "tabcd",
       key: "receiver",
+      filter: true,
       defaultSortOrder: "descend",
       sorter: (a, b) => a.tabcd - b.tabcd,
 

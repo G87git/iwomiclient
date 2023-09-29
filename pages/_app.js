@@ -24,15 +24,13 @@ function MyApp({ Component, pageProps }) {
   if (router.pathname === "/auth/login") {
     return <Component {...pageProps} />;
   }
+
   return (
     <ConfigProvider
       theme={{
         token: {
-          // Seed Token
           colorPrimary: "#00b96b",
           borderRadius: 2,
-
-          // Alias Token
           colorBgContainer: "#f6ffed",
         },
       }}

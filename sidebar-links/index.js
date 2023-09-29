@@ -81,7 +81,7 @@ const routes = [
     ],
   },
   {
-    title: "Transfer",
+    title: "Transactions",
     icon: <TransactionOutlined className="!text-primary" />,
     subMenu: [
       {

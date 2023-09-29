@@ -3,17 +3,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   mode: "jit",
   purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
-  darkMode: false, // or 'media' or 'class'
-  // theme: {
-  //   extend: {},
-  // },
-  // theme: {
-  //   extend: {
-  //     colors: {
-  //       primary: "#74397c"
-  //     },
-  //   },
-  // },
+  darkMode: false,
   theme: {
     fontFamily: {
       satoshi: ["Satoshi", "sans-serif"],
@@ -28,7 +18,7 @@ module.exports = {
       bodydark: "#AEB7C0",
       bodydark1: "#DEE4EE",
       bodydark2: "#8A99AF",
-      primary: "#1d8233",
+      primary: "#52c41a",
       secondary: "#80CAEE",
       stroke: "#E2E8F0",
       gray: "#EFF4FB",
