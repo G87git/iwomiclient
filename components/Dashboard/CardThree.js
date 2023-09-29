@@ -15,7 +15,7 @@ const CardThree = () => {
       bodyStyle={{ padding: "24px" }}
     >
       <div className="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
-        <ShoppingFilled style={{ fontSize: "22px", color: "#1890ff" }} />
+        <ShoppingFilled style={{ fontSize: "22px", color: "#52c41a" }} />
       </div>
 
       <div className="mt-4 flex items-end justify-between">
