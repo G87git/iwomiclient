@@ -108,53 +108,52 @@ export default function Index() {
       title: "Action",
       dataIndex: "action",
       key: "action",
+      render: (_, record) => (
+        <td className="flex-start">
+          <i
+            style={{ position: "relative", top: 3, cursor: "pointer" }}
+            onClick={() => {
+              // setSelectedModal("Slide")
+              // setSelectedSlide(record.name);
+              toggleAddModal();
+            }}
+          >
+            <BsPersonFillAdd
+              style={{
+                backgroundColor: "#07575b",
+                padding: 5,
+                borderRadius: 5,
+                color: "white",
+                marginRight: 15,
+              }}
+              size={30}
+            />
+          </i>
+  
+          <i
+            style={{ position: "relative", top: 3, cursor: "pointer" }}
+            onClick={() => {
+              // setSelectedModal("Case")
+              // setSelectedSlide(record.name);
+              toggleAddModal();
+            }}
+          >
+            <FiFolderPlus
+              style={{
+                backgroundColor: "#07575b",
+                padding: 5,
+                borderRadius: 5,
+                color: "white",
+              }}
+              size={30}
+            />
+          </i>
+        </td>
+      ),
     },
   ];
 
-  const menu = (
-    <Menu>
-      <Menu.Item onClick={exportExcel} icon={<FileExcelFilled />}>
-        Excel
-      </Menu.Item>
-      <Menu.Item icon={<FilePdfFilled />}>PDF</Menu.Item>
-      <Menu.Item icon={<FilePptFilled />}>CSV</Menu.Item>
-    </Menu>
-  );
 
-  function handleFilter(e) {
-    const { value } = e.target;
-    setSearch(value);
-  }
-
-  function exportExcel() {
-    const exportInstance = new tableExport(state.data, columns);
-    exportInstance.download("Paiement Facture", "xlsx");
-  }
-
-  function optionalParam() {
-    return (
-      <>
-        <div className="flex justify-between flex-wrap">
-          <div>
-            <Input
-              placeholder="Filter..."
-              onChange={handleFilter}
-              value={search}
-              className="!rounded h-[42px]"
-              prefix={<FilterOutlined />}
-            />
-          </div>
-          <div className="flex flex-wrap gap-2 items-center">
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <Button icon={<DownloadOutlined />} type="primary" className="!bg-primary !border-primary !h-[42px] !rounded">
-                Export
-              </Button>
-            </Dropdown>
-          </div>
-        </div>
-      </>
-    );
-  }
 
   function filterParams() {
     const handleSubmit = (values) => {
@@ -201,7 +200,7 @@ export default function Index() {
           showIndex={true}
           showFilter={{ filter: true, filterValue: filterParams() }}
           className={""}
-          optional={optionalParam()}
+          optional={true}
         />
       </div>
     </>

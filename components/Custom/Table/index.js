@@ -80,6 +80,7 @@ export default function Table(prob) {
             />
           </div>
           <div className="flex flex-wrap gap-2 items-center">
+            {prob.actions}
             <Dropdown overlay={menu} trigger={["click"]}>
               <Button icon={<DownloadOutlined />} type="primary" className="!bg-primary !border-primary !h-[42px] !rounded">
                 Export
@@ -101,7 +102,7 @@ export default function Table(prob) {
         <AntTable
             columns={columns}
             // dataSource={dataSource}
-            dataSource={filteredData.map((item, index) => ({ ...item, index: index + 1 }))}
+            dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
 
             size="middle"
             loading={false}

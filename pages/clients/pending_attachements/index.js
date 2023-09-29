@@ -107,51 +107,6 @@ export default function Index() {
    
   ];
 
-  const menu = (
-    <Menu>
-      <Menu.Item onClick={exportExcel} icon={<FileExcelFilled />}>
-        Excel
-      </Menu.Item>
-      <Menu.Item icon={<FilePdfFilled />}>PDF</Menu.Item>
-      <Menu.Item icon={<FilePptFilled />}>CSV</Menu.Item>
-    </Menu>
-  );
-
-  function handleFilter(e) {
-    const { value } = e.target;
-    setSearch(value);
-  }
-
-  function exportExcel() {
-    const exportInstance = new tableExport(state.data, columns);
-    exportInstance.download("Paiement Facture", "xlsx");
-  }
-
-  function optionalParam() {
-    return (
-      <>
-        <div className="flex justify-between flex-wrap">
-          <div>
-            <Input
-              placeholder="Filter..."
-              onChange={handleFilter}
-              value={search}
-              className="!rounded h-[42px]"
-              prefix={<FilterOutlined />}
-            />
-          </div>
-          <div className="flex flex-wrap gap-2 items-center">
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <Button icon={<DownloadOutlined />} type="primary" className="!bg-primary !border-primary !h-[42px] !rounded">
-                Export
-              </Button>
-            </Dropdown>
-          </div>
-        </div>
-      </>
-    );
-  }
-
   function filterParams() {
     const handleSubmit = (values) => {
       console.log("SEARCH", values);
@@ -206,7 +161,7 @@ export default function Index() {
           showIndex={true}
           showFilter={{ filter: true, filterValue: filterParams() }}
           className={""}
-          optional={optionalParam()}
+          optional={true}
         />
       </div>
     </>
