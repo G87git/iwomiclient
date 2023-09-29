@@ -5,32 +5,50 @@ import {
   UserGroupIcon,
   SafetyCertificateOutlined,
   GroupOutlined,
+  DashboardOutlined,
+  TransactionOutlined,
   LikeOutlined,
+  MoneyCollectOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
+
 import { HomeIcon } from "@heroicons/react/solid";
 import { BiDollar, BiMoney, BiStats, BiTransferAlt } from "react-icons/bi";
 import { BsBank, BsClock } from "react-icons/bs";
 import { FaMoneyBill, FaToolbox, FaUser } from "react-icons/fa";
-import { MdGroup, MdMoney, MdPayments } from "react-icons/md";
+import { MdDashboard, MdGroup, MdMoney, MdPayments } from "react-icons/md";
 
 const routes = [
-  { title: "Home", icon: <HomeIcon className="w-5" />, path: "/dashboard" },
+  {
+    title: "Dashboard",
+    icon: <DashboardOutlined className="!text-primary" />,
+    path: "/dashboard",
+  },
   {
     title: "System",
-    icon: <SettingOutlined />,
+    icon: <SettingOutlined className="!text-primary" />,
     subMenu: [
+      // {
+      //   title: "Nomenclature",
+      //   path: "/system/nomen",
+      //   icon: <DatabaseOutlined />,
+      // },
+      {
+        title: "Users",
+        path: "/system/users",
+        icon: <UserOutlined className="!text-primary" />,
+      },
       {
         title: "Habilitations",
         path: "/system/userauthorisation/authorisation",
-        icon: <SafetyCertificateOutlined />,
+        icon: <SafetyCertificateOutlined className="!text-primary" />,
       },
     ],
   },
 
   {
     title: "Client Management",
-    icon: <UserOutlined />,
+    icon: <UserOutlined className="!text-primary" />,
     subMenu: [
       {
         title: "Subscription List",
@@ -64,12 +82,12 @@ const routes = [
   },
   {
     title: "Transfer",
-    icon: <BiMoney />,
+    icon: <TransactionOutlined className="!text-primary" />,
     subMenu: [
       {
         title: "Transfer History",
         path: "/transfers/history",
-        icon: <FaMoneyBill />,
+        icon: <MoneyCollectOutlined />,
       },
     ],
   },
