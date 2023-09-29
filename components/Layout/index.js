@@ -151,8 +151,6 @@ export default function Layout({ children }) {
           selectedKeys={[openKey]}
           defaultOpenKeys={[openKey[0]]}
           className="!bg-white"
-
-          // defaultSelectedKeys={["1"]}
         >
           {routes.map((route, routeKey) => {
             const depthLevel = 0;
@@ -163,13 +161,13 @@ export default function Layout({ children }) {
                   title={route.title}
                   icon={route.icon}
                   depthLevel={depthLevel}
-                  className="!bg-white "
+                  className="!bg-white"
                 >
                   {route.subMenu.map((submenu) => (
                     <Menu.Item
                       key={`${routeKey}.${submenu.path}`}
                       icon={submenu.icon}
-                      className="!bg-white "
+                      className="hover:!text-primary"
                     >
                       <Link href={submenu.path}>
                         <a>{submenu.title}</a>
@@ -180,7 +178,11 @@ export default function Layout({ children }) {
               );
             } else {
               return (
-                <Menu.Item key={`${route.path}`} icon={route.icon}>
+                <Menu.Item
+                  key={`${route.path}`}
+                  icon={route.icon}
+                  className="hover:!text-primary"
+                >
                   <Link href={route.path}>
                     <a>{route.title}</a>
                   </Link>
