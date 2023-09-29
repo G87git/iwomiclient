@@ -87,93 +87,123 @@ const routes = [
     title: "Client Management",
     icon: <UserOutlined />,
     subMenu: [
-      // {
-      //   title: "Customer Management",
-      //   icon: <UploadOutlined />,
-      //   subMenu: [
-      //     {
-      //       title: "Consult client",
-      //       path: "/donne/consult-client",
-      //       icon: <TeamOutlined />
-      //     },
-      //     {
-      //       title: "Subscription",
-      //       path: "/donne/subscription",
-      //       icon: <LikeOutlined />,
-      //     },
-      //   ],
-      // },
       {
-        title: "Customer Management",
-        path: "/donnee/chargemt",
-        icon: <UploadOutlined />,
+        title: "Pending Subscription",
+        path: "/clients/pending_subscriptions",
       },
       {
-        title: "Consult client",
-        path: "/clients/fiabilise",
-        icon: <TeamOutlined />,
+        title: "Subscription List",
+        path: "/clients/subscriptions_list",
       },
       {
-        title: "Subscription",
-        path: "/business/subs",
-        icon: <LikeOutlined />,
+        title: "Initialise password",
+        path: "/clients/initialise_password",
       },
       {
-        title: "Account Management",
-        path: "/trans/account",
-        icon: <GroupOutlined />,
+        title: "Account Attachement",
+        path: "/clients/account_attachement",
       },
       {
-        title: "Balance",
-        path: "/trans/balance",
-        icon: <GroupOutlined />,
+        title: "Pending Attachement",
+        path: "/clients/pending_attachements",
       },
       {
-        title: "NC-FINANCE accounts",
-        path: "/business/business_account",
-        icon: <FaUser />,
+        title: "Rejected Clients",
+        path: "/clients/rejected_clients",
       },
       {
-        title: "Cash accounts",
-        path: "/business/business_caisse",
-        icon: <FaUser />,
-      },
-      {
-        title: "Scoring Management",
-        path: "/donnee/hist",
-        icon: <FaUser />,
-      },
-      {
-        title: "Group L Management",
-        path: "/donnee/hist",
-        icon: <MdGroup />,
-      },
-      {
-        title: "Loan Reinbursement",
-        path: "/donnee/hist",
-        icon: <MdMoney />,
-      },
-      {
-        title: "Transaction",
-        path: "/bank/transactions",
-        icon: <BsClock />,
-      },
-      {
-        title: "History",
-        path: "/bank/history",
-        icon: <BsClock />,
-      },
-      {
-        title: "Inventory",
-        path: "/bank/inventory",
-        icon: <FaUser />,
-      },
-      {
-        title: "Statistic Report",
-        path: "/donnee/hist",
-        icon: <BiStats />,
+        title: "Deleted Clients",
+        path: "/clients/deleted_clients",
       },
     ],
+    // subMenu: [
+    //   {
+    //     title: "Customer Management",
+    //     icon: <UploadOutlined />,
+    //     subMenu: [
+    //       {
+    //         title: "Consult client",
+    //         path: "/donne/consult-client",
+    //         icon: <TeamOutlined />
+    //       },
+    //       {
+    //         title: "Subscription",
+    //         path: "/donne/subscription",
+    //         icon: <LikeOutlined />,
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     title: "Customer Management",
+    //     path: "/donnee/chargemt",
+    //     icon: <UploadOutlined />,
+    //   },
+    //   {
+    //     title: "Consult client",
+    //     path: "/clients/fiabilise",
+    //     icon: <TeamOutlined />,
+    //   },
+    //   {
+    //     title: "Subscription",
+    //     path: "/business/subs",
+    //     icon: <LikeOutlined />,
+    //   },
+    //   {
+    //     title: "Account Management",
+    //     path: "/trans/account",
+    //     icon: <GroupOutlined />,
+    //   },
+    //   {
+    //     title: "Balance",
+    //     path: "/trans/balance",
+    //     icon: <GroupOutlined />,
+    //   },
+    //   {
+    //     title: "NC-FINANCE accounts",
+    //     path: "/business/business_account",
+    //     icon: <FaUser />,
+    //   },
+    //   {
+    //     title: "Cash accounts",
+    //     path: "/business/business_caisse",
+    //     icon: <FaUser />,
+    //   },
+    //   {
+    //     title: "Scoring Management",
+    //     path: "/donnee/hist",
+    //     icon: <FaUser />,
+    //   },
+    //   {
+    //     title: "Group L Management",
+    //     path: "/donnee/hist",
+    //     icon: <MdGroup />,
+    //   },
+    //   {
+    //     title: "Loan Reinbursement",
+    //     path: "/donnee/hist",
+    //     icon: <MdMoney />,
+    //   },
+    //   {
+    //     title: "Transaction",
+    //     path: "/bank/transactions",
+    //     icon: <BsClock />,
+    //   },
+    //   {
+    //     title: "History",
+    //     path: "/bank/history",
+    //     icon: <BsClock />,
+    //   },
+    //   {
+    //     title: "Inventory",
+    //     path: "/bank/inventory",
+    //     icon: <FaUser />,
+    //   },
+    //   {
+    //     title: "Statistic Report",
+    //     path: "/donnee/hist",
+    //     icon: <BiStats />,
+    //   },
+    // ],
   },
   {
     title: "Transfer",

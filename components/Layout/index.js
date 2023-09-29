@@ -137,7 +137,7 @@ export default function Layout({ children }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Sider
-        className="min-h-screen"
+        className="min-h-screen !bg-white"
         trigger={null}
         width={300}
         collapsible
@@ -147,10 +147,11 @@ export default function Layout({ children }) {
           <img className="w-40" src="/assets/images/iwomi.png" />
         </div>
         <Menu
-          theme="dark"
           mode="inline"
           selectedKeys={[openKey]}
           defaultOpenKeys={[openKey[0]]}
+          className="!bg-white"
+
           // defaultSelectedKeys={["1"]}
         >
           {routes.map((route, routeKey) => {
@@ -162,11 +163,13 @@ export default function Layout({ children }) {
                   title={route.title}
                   icon={route.icon}
                   depthLevel={depthLevel}
+                  className="!bg-white "
                 >
                   {route.subMenu.map((submenu) => (
                     <Menu.Item
                       key={`${routeKey}.${submenu.path}`}
                       icon={submenu.icon}
+                      className="!bg-white "
                     >
                       <Link href={submenu.path}>
                         <a>{submenu.title}</a>
@@ -188,7 +191,7 @@ export default function Layout({ children }) {
         </Menu>
       </Sider>
       <AntLayout className="site-layout">
-        <Header className="site-layout-background p-0 flex justify-between items-center bg-red-400 border">
+        <Header className="site-layout-background !bg-transparent p-0 flex justify-between items-center bg-red-400 ">
           {createElement(
             state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
@@ -221,7 +224,7 @@ export default function Layout({ children }) {
           </div>
         </Header>
         <Content
-          className="site-layout-background"
+          className=""
           style={{
             margin: "24px 16px",
             padding: 24,
