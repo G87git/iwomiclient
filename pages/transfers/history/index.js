@@ -6,7 +6,7 @@ import { Button, Dropdown, Input, Menu, Select } from "antd";
 import { Modal } from "antd";
 import apiClient from "api";
 import { useDisclosure } from "hooks";
-// import tableExport from "antd-table-export";
+import tableExport from "antd-table-export";
 import React, { useEffect, useReducer, useState } from "react";
 import IconButton from "@/components/IconButton";
 import { FaCheck, FaSearch, FaTimes } from "react-icons/fa";
@@ -29,7 +29,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 // import * as yup from "yup";
-import tableExport from "antd-table-export";
+// import tableExport from "antd-table-export";
 
 const initialValues = {
   firstName: "",
@@ -49,8 +49,8 @@ const validator = yup.object({
 
 export default function TransferHistory() {
   // const router = useRouter();
-  // const reducer = (prevState, newState) => ({ ...prevState, ...newState });
-  // const [state, dispatch] = useReducer(reducer, { data: [] });
+  const reducer = (prevState, newState) => ({ ...prevState, ...newState });
+  const [state, dispatch] = useReducer(reducer, { data: [] });
   // const { onClose, onOpen, open } = useDisclosure();
 
   const getStatus = (status) => {
@@ -143,26 +143,23 @@ export default function TransferHistory() {
   //   },
   // ];
 
-  // async function fetchData() {
-  //   dispatch({ loading: true });
-  //   let response = await apiClient({
-  //     method: "post",
-  //     url: "/api/v2/workflow/consultAllState",
-  //     body: {
-  //       configCode: "tebit_flow",
-  //       userProfile: "string",
-  //       username: "237683501637",
-  //     },
-  //   });
-  //   dispatch({ data: response.data.data || [], loading: false });
-  // }
+  async function fetchData() {
+    dispatch({ loading: true });
+    let response = await apiClient({
+      method: "get",
+      url: "/payment/listtrans",
+    });
+    dispatch({ data: response.data.data || [], loading: false });
+  }
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const reducer = (prevState, action) => ({ ...prevState, ...action });
-  const [state, dispatch] = useReducer(reducer, {});
+  console.log("Data loaded", state)
+
+  // const reducer = (prevState, action) => ({ ...prevState, ...action });
+  // const [state, dispatch] = useReducer(reducer, {});
   const [search, setSearch] = useState("");
   const layout = {
     labelCol: { span: 8 },

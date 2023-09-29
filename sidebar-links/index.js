@@ -85,7 +85,7 @@ const routes = [
     icon: <TransactionOutlined className="!text-primary" />,
     subMenu: [
       {
-        title: "Transfer History",
+        title: "Transfer",
         path: "/transfers/history",
         icon: <MoneyCollectOutlined />,
       },
