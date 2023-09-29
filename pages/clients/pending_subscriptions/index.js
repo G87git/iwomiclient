@@ -133,12 +133,13 @@ export default function ConfigurationHistory() {
               placeholder="Filter..."
               onChange={handleFilter}
               value={search}
+              className="!rounded h-[42px]"
               prefix={<FilterOutlined />}
             />
           </div>
           <div className="flex flex-wrap gap-2 items-center">
             <Dropdown overlay={menu} trigger={["click"]}>
-              <Button icon={<DownloadOutlined />} type="primary" className="!bg-primary !border-primary">
+              <Button icon={<DownloadOutlined />} type="primary" className="!bg-primary !border-primary !h-[42px] !rounded">
                 Export
               </Button>
             </Dropdown>
@@ -165,7 +166,7 @@ export default function ConfigurationHistory() {
          <FormField placeholder="Date Modified" name="dateModified" />
 
          <SelectFormField
-            placeholder="First Name"
+            placeholder="Subscription Branch"
             name="subsBranch"
             options={[
               { value: 1, label: "Bamenda" },
