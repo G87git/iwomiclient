@@ -59,8 +59,12 @@ const routes = [
         path: "/clients/pending_subscriptions",
       },
       {
-        title: "Initialise password",
+        title: "Initialise Password",
         path: "/clients/initialise_password",
+      },
+      {
+        title: "Initialise Pin",
+        path: "/clients/initialise_pin",
       },
       {
         title: "Account Attachement",
