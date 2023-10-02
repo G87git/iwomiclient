@@ -51,42 +51,42 @@ export default function Index() {
       dataIndex: "tabcd",
       key: "configTabcd",
       filter: true,
-      defaultSortOrder: "descend",
+      
       sorter: (a, b) => a.tabcd - b.tabcd,
     },
     {
       title: " Last Name",
       dataIndex: "tbnam",
       key: "configBill",
-      defaultSortOrder: "descend",
+      
       sorter: (a, b) => a.tbnam - b.tbnam,
     },
     {
       title: "Telephone",
       dataIndex: "tbnam",
       key: "configPaid",
-      defaultSortOrder: "descend",
+      
       sorter: (a, b) => a.tbnam - b.tbnam,
     },
     {
       title: "Account",
       dataIndex: "tbnam",
       key: "configAmountLeft",
-      defaultSortOrder: "descend",
+      
       sorter: (a, b) => a.tbnam - b.tbnam,
     },
     {
       title: "Email",
       dataIndex: "tbnam",
       key: "configAmountLeftf",
-      defaultSortOrder: "descend",
+      
       sorter: (a, b) => a.tbnam - b.tbnam,
     },
     {
       title: "Subscription Branch",
       dataIndex: "tbnam",
       key: "configAmountLeftf",
-      defaultSortOrder: "descend",
+      
       filter: true,
       sorter: (a, b) => a.tbnam - b.tbnam,
     },
@@ -94,7 +94,7 @@ export default function Index() {
       title: "Date Modified",
       dataIndex: "tbnam",
       key: "configDate",
-      defaultSortOrder: "descend",
+      
       sorter: (a, b) => a.tbnam - b.tbnam,
     },
 

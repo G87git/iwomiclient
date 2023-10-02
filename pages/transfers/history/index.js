@@ -42,33 +42,33 @@ export default function TransferHistory() {
       dataIndex: "id",
       key: "id",
       filter: true,
-      defaultSortOrder: "descend",
+      
     },
     {
       title: "Sender Wallet",
       dataIndex: "sourceAccountId",
       key: "sourceAccountId",
       filter: true,
-      defaultSortOrder: "descend",
+      
     },
     {
       title: "Reciever Wallet",
       dataIndex: "targetAccountId",
       key: "targetAccountId",
       filter: true,
-      defaultSortOrder: "descend",
+      
     },
     {
       title: "Transaction Type",
       dataIndex: "transTyp",
       key: "transTyp",
-      defaultSortOrder: "descend",
+      
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      defaultSortOrder: "descend",
+      
     },
     {
       title: "Initiation Date",

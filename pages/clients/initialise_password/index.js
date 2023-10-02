@@ -1,158 +1,106 @@
 import React, { useEffect, useState } from "react";
-import { Button, Dropdown, Input, Menu, Select } from "antd";
 import { useReducer } from "react";
-import {
-  DownloadOutlined,
-  EyeOutlined,
-  FileExcelFilled,
-  FilePdfFilled,
-  FilePptFilled,
-  FilterOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import tableExport from "antd-table-export";
 import Table from "../../../components/Custom/Table/index";
-import { Link } from "react-router-dom";
-import { FaTrash } from "react-icons/fa";
-import Form from "../../../components/Form/Form";
-import SelectFormField from "../../../components/Form/SelectField";
-import FormField from "../../../components/Form/FormField";
-import * as yup from "yup";
-import FormButton from "../../../components/Form/FormButton";
+import { Button, Result, Modal } from "antd";
+import apiClient from "api";
+import { BiEdit } from "react-icons/bi";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
+import Swal from "sweetalert2";
+const { confirm } = Modal;
 
-const initialValues = {
-  clientCode: "",
-  phoneNumber: "",
-  dateModified: "",
-  subsBranch: "",
-  status:""
-};
-
-const validator = yup.object({
-  clientCode: yup.string(),
-  phoneNumber: yup.string(),
-  dateModified: yup.string(),
-  subsBranch: yup.string(),
-  status:yup.string(),
-});
 
 export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
   const [state, dispatch] = useReducer(reducer, {});
-  const [search, setSearch] = useState("")
-  const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+
+  const showPropsConfirm = () => {
+    Swal.fire({
+        title: "Initialise Password?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#52c41a",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes! Initialise",
+      }).then((result) => {});
   };
 
- 
   const columns = [
     {
-      title: "Client Name",
-      dataIndex: "tabcd",
-      key: "configTabcd",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.tabcd - b.tabcd,
-    },
-    {
-      title: " Client Code",
-      dataIndex: "tbnam",
-      key: "configBill",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.tbnam - b.tbnam,
-    },
-    {
-      title: "Wallet Code",
-      dataIndex: "tbnam",
-      key: "configPaid",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.tbnam - b.tbnam,
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "tbnam",
-      key: "configAmountLeft",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.tbnam - b.tbnam,
-    },
-    {
-      title: "Email",
-      dataIndex: "tbnam",
-      key: "configAmountLeftf",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.tbnam - b.tbnam,
-    },
-    {
-      title: "Subscription Branch",
-      dataIndex: "tbnam",
-      key: "configAmountLeftf",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.tbnam - b.tbnam,
-    },
-    {
-      title: "Date Modified",
-      dataIndex: "tbnam",
-      key: "configDate",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.tbnam - b.tbnam,
-    },
+        title: "First Name",
+        key: "firstname",
+        dataIndex: "firstname",
+        filter: true,
+      },
+      {
+        title: "Last Name",
+        key: "lastname",
+        dataIndex: "lastname",
+        filter: true,
+      },
+      {
+        title: "Account Numer",
+        key: "accountNumber",
+        dataIndex: "accountNumber",
+        filter: true,
+      },
+      { title: "Email", key: "email", dataIndex: "email", filter: true },
+      { title: "Phone", key: "phone", dataIndex: "phone", filter: true },
+      {
+        title: "Profession",
+        key: "proffession",
+        dataIndex: "proffession",
+        filter: true,
+      },
+      { title: "Creation Date", key: "creationDate", dataIndex: "creationDate" },
+      {
+        title: "Residencial Address",
+        key: "residentialAddresse",
+        dataIndex: "residentialAddresse",
+        filter: true,
+      },
 
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
+      render: (_, value) => {
+        return (
+       
+            <Button type="primary" onClick={showPropsConfirm} className="!rounded">
+            <BiEdit />
+            </Button>
+        
+          //   <Button type="primary" className="!rounded cursor-pointer" onClick={()=>setShowEditModal(true)}>
+
+          //     <BiEdit />
+          //   </Button>
+        );
+      },
     },
   ];
 
- 
-
-  function filterParams() {
-    const handleSubmit = (values) => {
-      console.log("SEARCH", values);
-    };
-    return (
-      <div className="!bg-white !p-5 !mb-10 rounded-lg">
-        <Form
-          initialValues={initialValues}
-          validationSchema={validator}
-          onSubmit={handleSubmit}
-        >
-         <div className="grid md:grid-cols-4 content-center md:gap-x-2">
-         <FormField placeholder="First Name" name="clientCode" />
-         <FormField placeholder="Last Name" name="phoneNumber" />
-         <FormField placeholder="Date Modified" name="dateModified" />
-
-         <SelectFormField
-            placeholder="Subscription Branch"
-            name="subsBranch"
-            options={[
-              { value: 1, label: "Bamenda" },
-              { value: 2, label: "Limbe" },
-              { value: 3, label: "Buea" },
-            ]}
-          />
-         <SelectFormField
-            placeholder="Select Processing Status"
-            name="status"
-            options={[
-              { value: 1, label: "Success" },
-              { value: 2, label: "Pending" },
-              { value: 3, label: "Failed" },
-            ]}
-          />
-         </div>
-         <div className="flex justify-end">
-
-         <div className="w-40 ">
-            <FormButton >
-                Search
-            </FormButton>
-         </div>
-         </div>
-        </Form>
-      </div>
-    );
+  function showDelM(code) {
+    setCode({ uname: code });
+    showDelModal();
   }
+
+  async function fetchData() {
+    dispatch({ loading: true });
+
+    let response = await apiClient({
+      method: "get",
+      url: "/auth/allUsers",
+    });
+
+    dispatch({ data: response.data.data || [], loading: false });
+  }
+
+  console.log("data", state.data)
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -163,11 +111,15 @@ export default function Index() {
         <Table
           columns={columns}
           dataSource={state.data}
-          loading={true}
+          loading={state.loading}
           showIndex={true}
-          showFilter={{ filter: true, filterValue: filterParams() }}
-          className={""}
+          showFilter={true}
           optional={true}
+          actions={
+            <Button href="/users/adduser" type="primary" size="large">
+              Ajouter un utilisateur
+            </Button>
+          }
         />
       </div>
     </>
