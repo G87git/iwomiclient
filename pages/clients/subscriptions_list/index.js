@@ -5,6 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import Table from "@/components/Custom/Table";
 import apiClient from "api";
 import Swal from "sweetalert2";
+import UploadFile from "./upload_files";
 
 export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
@@ -112,6 +113,7 @@ export default function Index() {
       confirmButtonColor: "#52c41a",
       cancelButtonColor: "#d33",
       confirmButtonText: "Oui! Suprimer",
+      cancelButtonText: "Annuler",
     }).then((result) => {});
   }
 
@@ -156,6 +158,16 @@ export default function Index() {
       filter: true,
     },
     {
+      title: "Status",
+      key: "id",
+      dataIndex: "id",
+      render: (_, { tag }) => {
+        var statusObj = getStatus(tag);
+
+        return <div style={{ color: statusObj.color }}>{statusObj.name}</div>;
+      },
+    },
+    {
       title: "Attachement",
       key: "sortcode",
       dataIndex: "sortcode",
@@ -172,16 +184,6 @@ export default function Index() {
             Upload Documents
           </Button>
         );
-      },
-    },
-    {
-      title: "Status",
-      key: "id",
-      dataIndex: "id",
-      render: (_, { tag }) => {
-        var statusObj = getStatus(tag);
-
-        return <div style={{ color: statusObj.color }}>{statusObj.name}</div>;
       },
     },
     {
@@ -271,17 +273,36 @@ export default function Index() {
       />
 
       <Modal
-        title="Modal 1000px width"
+        title="Client Attachements"
         centered
-        open={open}
+        visible={open}
         onOk={() => setOpen(false)}
         onCancel={() => setOpen(false)}
-        width={1000}
-        
+        width={800}
       >
-        <p>some contents...</p>
-        <p>some contents...</p>
-        <p>some contents...</p>
+        <div className="flex items-center justify-center gap-5 flex-row">
+          <UploadFile
+            name="Image"
+            files={files}
+            accessor="image"
+            setFiles={setFiles}
+            handleFileChange={handleFileChange}
+          />
+          <UploadFile
+            name="CNI"
+            accessor="cni"
+            files={files}
+            setFiles={setFiles}
+            handleFileChange={handleFileChange}
+          />
+          <UploadFile
+            name="Attachment"
+            accessor="file"
+            files={files}
+            setFiles={setFiles}
+            handleFileChange={handleFileChange}
+          />
+        </div>
       </Modal>
     </>
   );

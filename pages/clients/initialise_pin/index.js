@@ -6,8 +6,8 @@ import apiClient from "api";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import Swal from "sweetalert2";
+import { MdOutlineResetTv } from "react-icons/md";
 const { confirm } = Modal;
-
 
 export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
@@ -15,50 +15,50 @@ export default function Index() {
 
   const showPropsConfirm = () => {
     Swal.fire({
-        title: "Initialise Pin?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#52c41a",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes! Initialise",
-      }).then((result) => {});
+      title: "Initialise Pin?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#52c41a",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes! Initialise",
+    }).then((result) => {});
   };
 
   const columns = [
     {
-        title: "First Name",
-        key: "firstname",
-        dataIndex: "firstname",
-        filter: true,
-      },
-      {
-        title: "Last Name",
-        key: "lastname",
-        dataIndex: "lastname",
-        filter: true,
-      },
-      {
-        title: "Account Numer",
-        key: "accountNumber",
-        dataIndex: "accountNumber",
-        filter: true,
-      },
-      { title: "Email", key: "email", dataIndex: "email", filter: true },
-      { title: "Phone", key: "phone", dataIndex: "phone", filter: true },
-      {
-        title: "Profession",
-        key: "proffession",
-        dataIndex: "proffession",
-        filter: true,
-      },
-      { title: "Creation Date", key: "creationDate", dataIndex: "creationDate" },
-      {
-        title: "Residencial Address",
-        key: "residentialAddresse",
-        dataIndex: "residentialAddresse",
-        filter: true,
-      },
+      title: "First Name",
+      key: "firstname",
+      dataIndex: "firstname",
+      filter: true,
+    },
+    {
+      title: "Last Name",
+      key: "lastname",
+      dataIndex: "lastname",
+      filter: true,
+    },
+    {
+      title: "Account Numer",
+      key: "accountNumber",
+      dataIndex: "accountNumber",
+      filter: true,
+    },
+    { title: "Email", key: "email", dataIndex: "email", filter: true },
+    { title: "Phone", key: "phone", dataIndex: "phone", filter: true },
+    {
+      title: "Profession",
+      key: "proffession",
+      dataIndex: "proffession",
+      filter: true,
+    },
+    { title: "Creation Date", key: "creationDate", dataIndex: "creationDate" },
+    {
+      title: "Residencial Address",
+      key: "residentialAddresse",
+      dataIndex: "residentialAddresse",
+      filter: true,
+    },
 
     {
       title: "Action",
@@ -66,15 +66,13 @@ export default function Index() {
       key: "action",
       render: (_, value) => {
         return (
-       
-            <Button type="primary" onClick={showPropsConfirm} className="!rounded">
-            <BiEdit />
-            </Button>
-        
-          //   <Button type="primary" className="!rounded cursor-pointer" onClick={()=>setShowEditModal(true)}>
-
-          //     <BiEdit />
-          //   </Button>
+          <Button
+            type="outlined"
+            onClick={showPropsConfirm}
+            className="!rounded"
+          >
+            <MdOutlineResetTv />
+          </Button>
         );
       },
     },
@@ -96,7 +94,7 @@ export default function Index() {
     dispatch({ data: response.data.data || [], loading: false });
   }
 
-  console.log("data", state.data)
+  console.log("data", state.data);
 
   useEffect(() => {
     fetchData();

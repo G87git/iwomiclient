@@ -89,8 +89,9 @@ export default function Table(props) {
             <Dropdown overlay={menu} trigger={["click"]}>
               <Button
                 icon={<DownloadOutlined />}
-                type="primary"
-                className="!bg-primary !border-primary !h-[42px] !rounded"
+                type="outlined"
+                size="large"
+                className="flex items-center justify-center"
               >
                 Export
               </Button>

@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import { useRef } from "react";
 import { FaTrash } from "react-icons/fa";
 
@@ -11,7 +12,7 @@ export default function UploadFile({
   const ref = useRef(null);
 
   return (
-    <div className="d-flex align-items-center justify-content-center flex-column">
+    <div className="flex items-center justify-center flex-col">
       <h6 className="mb-2">{`Upload ${name}`}</h6>
       <input
         type="file"
@@ -22,14 +23,15 @@ export default function UploadFile({
         style={{ display: "none" }}
         onChange={handleFileChange}
       />
-      <div
-        className="btn btn-outline-secondary "
+      <Button
+        size="large"
+        type="outlined"
         onClick={() => {
           ref.current.click();
         }}
       >
         Upload
-      </div>
+      </Button>
       <div
         style={{ fontSize: "12.5px" }}
         className="mt-2 d-flex align-items-center justify-content-center"
