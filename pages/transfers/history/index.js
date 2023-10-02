@@ -156,7 +156,7 @@ export default function TransferHistory() {
     fetchData();
   }, []);
 
-  console.log("Data loaded", state)
+  console.log("Data loaded", state);
 
   // const reducer = (prevState, action) => ({ ...prevState, ...action });
   // const [state, dispatch] = useReducer(reducer, {});
@@ -168,56 +168,65 @@ export default function TransferHistory() {
 
   const columns = [
     {
-      title: "Sender",
-      dataIndex: "tabcd",
-      key: "createUser",
+      title: "Transaction ID",
+      dataIndex: "id",
+      key: "id",
       filter: true,
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.tabcd - b.tabcd,
+      sorter: (a, b) => a.id - b.id,
     },
+    // {
+    //   title: "Client Code",
+    //   dataIndex: "sourceAccountId",
+    //   key: "sourceAccountId",
+    //   filter: true,
+    //   defaultSortOrder: "descend",
+    //   sorter: (a, b) => a.sourceAccountId - b.sourceAccountId,
+    // },
     {
-      title: "Receiver",
-      dataIndex: "tabcd",
-      key: "receiver",
+      title: "Sender Wallet",
+      dataIndex: "sourceAccountId",
+      key: "sourceAccountId",
       filter: true,
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.tabcd - b.tabcd,
-
-      Cell: ({ row: { original = {} } }) => {
-        return original.initiator?.data.champ5;
-      },
+      sorter: (a, b) => a.sourceAccountId - b.sourceAccountId,
     },
     {
-      title: "Receiver Type",
-      dataIndex: "tabcd",
-      key: "recieverType",
+      title: "Reciever Wallet",
+      dataIndex: "targetAccountId",
+      key: "targetAccountId",
+      filter: true,
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.tabcd - b.tabcd,
+      sorter: (a, b) => a.targetAccountId - b.targetAccountId,
+    },
+    // {
+    //   title: "Reciever Name",
+    //   dataIndex: "targetOwnerName",
+    //   key: "targetOwnerName",
+    //   filter: true,
+    //   defaultSortOrder: "descend",
+    //   sorter: (a, b) => a.targetOwnerName.localeCompare(b.targetOwnerName),
+    // },
+    {
+      title: "Transaction Type",
+      dataIndex: "transTyp",
+      key: "transTyp",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.transTyp.localeCompare(b.transTyp),
     },
     {
       title: "Status",
-      dataIndex: "tabcd",
-      key: "statusEvolution",
+      dataIndex: "status",
+      key: "status",
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.tabcd - b.tabcd,
-      Cell: ({ value }) => {
-        const { name, color } = getStatus(value);
-        return (
-          <div
-            style={{ background: color }}
-            className="bg-yellow-500 w-max py-1 px-3 text-white rounded-3xl"
-          >
-            {name}
-          </div>
-        );
-      },
+      sorter: (a, b) => a.status.localeCompare(b.status),
     },
 
     {
       title: "Amount",
-      dataIndex: "tabcd",
-      key: "initiator",
-      sorter: (a, b) => a.tabcd - b.tabcd,
+      dataIndex: "amount",
+      key: "amount",
+      sorter: (a, b) => a.amount - b.amount,
       Cell: ({ value }) => {
         return (
           <NumericFormat
@@ -230,10 +239,16 @@ export default function TransferHistory() {
       },
     },
     {
-      title: "Date",
-      dataIndex: "tabcd",
-      key: "createdDate",
-      sorter: (a, b) => a.tabcd - b.tabcd,
+      title: "Initiation Date",
+      dataIndex: "dou",
+      key: "dou",
+      sorter: (a, b) => a.dou - b.dou,
+    },
+    {
+      title: "Completion Date",
+      dataIndex: "dmo",
+      key: "dmo",
+      sorter: (a, b) => a.dmo - b.dmo,
     },
     {
       title: "Action",
@@ -259,6 +274,8 @@ export default function TransferHistory() {
       },
     },
   ];
+
+  console.log("Data", state.data);
 
   const menu = (
     <Menu>
@@ -354,7 +371,7 @@ export default function TransferHistory() {
         <Table
           columns={columns}
           dataSource={state.data}
-          loading={true}
+          loading={state.loading}
           showIndex={true}
           showFilter={{ filter: true, filterValue: filterParams() }}
           className={""}

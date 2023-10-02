@@ -105,12 +105,12 @@ export default function Index() {
   const data = 
     [
         {
-          "clientName": "John Smith",
+          clientName: "John Smith",
           "clientCode": "1234",
           "productCode": "5678",
           "phoneNumber": 1234567890,
           "Email": "johnsmith@example.com",
-          "subsBranch": "New York",
+          "subsBranch": "New Yorkx",
           "dateModified": "2020-12-15",
           "status": "active"
         },

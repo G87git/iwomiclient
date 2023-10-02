@@ -17,8 +17,11 @@ import {
 import { DateRangePicker } from "rsuite";
 
 export default function Table(prob) {
+  console.log(prob.dataSource);
+
   let columns;
-  let dataSource;
+  let dataSource = [];
+  
   if (prob.showIndex) {
     columns = [{ title: "#", dataIndex: "table_index" }, ...prob.columns];
     dataSource = prob.dataSource?.map((data, index) => ({
@@ -222,11 +225,11 @@ export default function Table(prob) {
       <Loader show={prob.loader} message={spinner} contentBlur={0.1}>
         <AntTable
             columns={columns}
-            // dataSource={dataSource}
-            dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
+            dataSource={dataSource}
+            // dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
 
             size="middle"
-            loading={false}
+            loading={prob.loading}
             style={{overflowX: 'auto'}}
             showSorterTooltip={false}
         />
