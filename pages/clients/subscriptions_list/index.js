@@ -18,25 +18,38 @@ export default function Index() {
   }
 
   const columns = [
-    { title: "First Name", key: "firstname", dataIndex: "firstname" },
-    { title: "Last Name", key: "lastname", dataIndex: "lastname" },
+    {
+      title: "First Name",
+      key: "firstname",
+      dataIndex: "firstname",
+      filter: true,
+    },
+    {
+      title: "Last Name",
+      key: "lastname",
+      dataIndex: "lastname",
+      filter: true,
+    },
     {
       title: "Account Numer",
       key: "accountNumber",
       dataIndex: "accountNumber",
+      filter: true,
     },
-    { title: "Email", key: "email", dataIndex: "email" },
-    { title: "Phone", key: "phone", dataIndex: "phone" },
+    { title: "Email", key: "email", dataIndex: "email", filter: true },
+    { title: "Phone", key: "phone", dataIndex: "phone", filter: true },
     {
       title: "Profession",
       key: "proffession",
       dataIndex: "proffession",
+      filter: true,
     },
     { title: "Creation Date", key: "creationDate", dataIndex: "creationDate" },
     {
       title: "Residencial Address",
       key: "residentialAddresse",
       dataIndex: "residentialAddresse",
+      filter: true,
     },
     {
       title: "Status",
@@ -103,7 +116,7 @@ export default function Index() {
         loading={state.loading ?? false}
         optional={true}
         showIndex={true}
-        datasource={state.data ?? []}
+        dataSource={state.data ?? []}
         showFilter={{ filter: true }}
         actions={
           <Button href="/users/adduser" type="primary" size="large">

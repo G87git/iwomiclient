@@ -16,35 +16,28 @@ import {
 } from "@ant-design/icons";
 import { DateRangePicker } from "rsuite";
 
-export default function Table(prob) {
-  console.log(`Table ${prob.datasource}`);
-
-  let columns = {};
-  let dataSource = [];
-  
-  if (prob.showIndex) {
-    columns = [{ title: "#", dataIndex: "table_index" }, ...prob.columns];
-    dataSource = prob.dataSource?.map((data, index) => ({
-      ...data,
-      table_index: index + 1,
-    }));
-  } else {
-    columns = prob.columns;
-  }
-
+export default function Table(props) {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
-
   const [state, dispatch] = useReducer(reducer, {
     filterObj: {},
   });
 
   const [searchText, setSearchText] = useState("");
-  const [data, setData] = useState(dataSource);
-  const [filteredData, setFilteredData] = useState(data);
 
-  useEffect(() => {
-    setFilteredData(filterData(data, searchText));
-  }, [data, searchText]);
+  let columns = props.columns;
+  let dataSource = [];
+
+  if (props.showIndex) {
+    columns = [{ title: "#", dataIndex: "table_index" }, ...props.columns];
+    dataSource = props.dataSource?.map((data, index) => ({
+      ...data,
+      table_index: index + 1,
+    }));
+  }
+
+  // useEffect(() => {
+  //   setFilteredData(filterData(data, searchText));
+  // }, [data, searchText]);
 
   function handlefilterChange({ target: { name, value } }) {
     dispatch({ filterObj: { ...state.filterObj, [name]: value } });
@@ -61,6 +54,7 @@ export default function Table(prob) {
       )
     );
   };
+
   const handleSearch = (value) => {
     setSearchText(value);
   };
@@ -70,13 +64,12 @@ export default function Table(prob) {
       <Menu.Item onClick={exportExcel} icon={<FileExcelFilled />}>
         Excel
       </Menu.Item>
-      {/* <Menu.Item icon={<FilePdfFilled />}>PDF</Menu.Item>
-      <Menu.Item icon={<FilePptFilled />}>CSV</Menu.Item> */}
+      <Menu.Item icon={<FilePptFilled />}>CSV</Menu.Item>
     </Menu>
   );
 
   function exportExcel() {
-    const exportInstance = new tableExport(prob.dataSource, columns);
+    const exportInstance = new tableExport(props.dataSource, columns);
     exportInstance.download("Paiement Facture", "xlsx");
   }
 
@@ -95,7 +88,7 @@ export default function Table(prob) {
             />
           </div>
           <div className="flex flex-wrap gap-2 items-center">
-            {prob.actions}
+            {props.actions}
             <Dropdown overlay={menu} trigger={["click"]}>
               <Button
                 icon={<DownloadOutlined />}
@@ -117,12 +110,14 @@ export default function Table(prob) {
     </span>
   );
 
+  console.log("DS",props.datasource)
+
   return (
     <div className="space-y-2">
       <div className="py-6 px-8 pb-3 bg-white rounded mb-8">
-        <div className="row grid grid-cols-3 gap-4">
-          {prob.columns
-            // .filter((e) => e.filter === true)
+        <div className="row grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
+          {props.columns
+            .filter((e) => e.filter === true)
             .map((column, i) => {
               if (column.disableFilters) {
                 return;
@@ -220,17 +215,17 @@ export default function Table(prob) {
           {state.isSearching && <Loader className="mx-2" />}
         </div>
       </div>
-      {/* {prob.showFilter?.filter && prob.showFilter?.filterValue} */}
-      {prob.optional ? optionalParam() : []}
-      <Loader show={prob.loader} message={spinner} contentBlur={0.1}>
+      {/* {props.showFilter?.filter && props.showFilter?.filterValue} */}
+      {props.optional ? optionalParam() : []}
+      <Loader show={props.loader} message={spinner} contentBlur={0.1}>
         <AntTable
-            columns={columns}
-            dataSource={dataSource}
-            // dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
-            size="middle"
-            loading={prob.loading}
-            style={{overflowX: 'auto'}}
-            showSorterTooltip={false}
+          columns={columns}
+          dataSource={props.dataSource}
+          // dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
+          size="middle"
+          loading={props.loading}
+          style={{ overflowX: "auto" }}
+          showSorterTooltip={false}
         />
       </Loader>
     </div>
