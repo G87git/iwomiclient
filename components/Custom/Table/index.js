@@ -17,9 +17,9 @@ import {
 import { DateRangePicker } from "rsuite";
 
 export default function Table(prob) {
-  console.log(prob.dataSource);
+  console.log(`Table ${prob.datasource}`);
 
-  let columns;
+  let columns = {};
   let dataSource = [];
   
   if (prob.showIndex) {
@@ -227,7 +227,6 @@ export default function Table(prob) {
             columns={columns}
             dataSource={dataSource}
             // dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
-
             size="middle"
             loading={prob.loading}
             style={{overflowX: 'auto'}}

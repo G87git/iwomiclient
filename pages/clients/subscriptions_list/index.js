@@ -1,18 +1,11 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { AiOutlineEye } from "react-icons/ai";
-import { Modal, Button } from "antd";
-import PostData from "model/PostData";
+import { Button } from "antd";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import Swal from "sweetalert2";
-import { getAllUsers, getProfiles } from "utils/users";
-import { getSelectData, matchKeys, mergeData } from "utils";
 import Table from "@/components/Custom/Table";
 import apiClient from "api";
 
-export default function Index({ usersData = [], profiles }) {
-  const [code, setCode] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
+export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
 
   const [state, dispatch] = useReducer(reducer, {
@@ -97,33 +90,7 @@ export default function Index({ usersData = [], profiles }) {
     fetchData();
   }, []);
 
-  function hideDelM() {
-    console.log(code.uname);
-    const body = { cetab: "001", uname: code.uname };
-    PostData({ method: "post", url: "/deleUserByUname", body }, (res) => {
-      if (res !== "Error") {
-        if (res.status === "01") {
-          Swal.fire({
-            title: "Success",
-            icon: "success",
-            text: res.message,
-          }).then((e) => {});
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Error Occured",
-          });
-        }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Network Error",
-        });
-      }
-    });
-  }
+  console.log(state.data);
 
   return (
     <>
@@ -135,7 +102,8 @@ export default function Index({ usersData = [], profiles }) {
         columns={columns}
         loading={state.loading ?? false}
         optional={true}
-        datasourece={state.data ?? []}
+        showIndex={true}
+        datasource={state.data ?? []}
         showFilter={{ filter: true }}
         actions={
           <Button href="/users/adduser" type="primary" size="large">
@@ -143,49 +111,6 @@ export default function Index({ usersData = [], profiles }) {
           </Button>
         }
       />
-
-      <Modal
-        title="Supprimer un Utilisateur"
-        visible={isModalVisible}
-        onOk={hideDelM}
-        onCancel={() => {
-          setIsModalVisible(false);
-        }}
-        footer={[
-          <Button
-            key="submit"
-            type="primary"
-            //  onClick={hideDelM}
-            onClick={() => {
-              setIsModalVisible(false);
-              hideDelM();
-            }}
-          >
-            Oui
-          </Button>,
-          <Button
-            key="back"
-            type="secondary"
-            onClick={() => {
-              setIsModalVisible(false);
-            }}
-          >
-            Non
-          </Button>,
-        ]}
-      >
-        <h3>Souhaitez-vous Supprimer cet Utilisateur ?</h3>
-      </Modal>
     </>
   );
-}
-
-export async function getServerSideProps(_) {
-  let users = await getAllUsers();
-  let profiles = await getProfiles();
-  let usersData = mergeData(users.data, profiles.data, "prfle", "acscd");
-  let profileSelect = getSelectData(profiles.data, "name", "acscd");
-  return {
-    props: { usersData, profileSelect },
-  };
 }
