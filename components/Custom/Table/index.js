@@ -1,18 +1,15 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useReducer } from "react";
 import AntTable from "antd/lib/table";
 import Loader from "react-loader-advanced";
 import { Spin } from "antd";
 import tableExport from "antd-table-export";
 
-import { Button, Dropdown, Input, Menu, Select } from "antd";
+import { Button, Dropdown, Input, Menu } from "antd";
 import {
   DownloadOutlined,
-  EyeOutlined,
   FileExcelFilled,
-  FilePdfFilled,
   FilePptFilled,
   FilterOutlined,
-  SearchOutlined,
 } from "@ant-design/icons";
 import { DateRangePicker } from "rsuite";
 
@@ -109,8 +106,6 @@ export default function Table(props) {
       <Spin />
     </span>
   );
-
-  console.log("DS",props.datasource)
 
   return (
     <div className="space-y-2">
