@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const apiClient = ({ method, url, body }) => {
   axios.defaults.baseURL = "http://192.168.100.123:8081/api/v2/"
   // axios.defaults.baseURL = "http://57.128.163.118:8081/api/v2/";
@@ -11,4 +12,5 @@ const apiClient = ({ method, url, body }) => {
 }
   return axios({ method, url, data: body });
 };
+
 export default apiClient;

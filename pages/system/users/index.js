@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { Modal, Button } from "antd";
 import PostData from "model/PostData";
@@ -10,10 +10,15 @@ import { getSelectData, matchKeys, mergeData } from "utils";
 import Table from "@/components/Custom/Table";
 
 export default function ListUsers({ usersData = [], profiles }) {
-  const [state, dispatch] = useState([]);
   const [code, setCode] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const reducer = (prevState, action) => ({ ...prevState, ...action });
+
+  const [state, dispatch] = useReducer(reducer, {
+    loading: true,
+    data: [],
+  });
 
   function showDelModal() {
     setIsModalVisible(true);
@@ -66,6 +71,7 @@ export default function ListUsers({ usersData = [], profiles }) {
     setCode({ uname: code });
     showDelModal();
   }
+
   function hideDelM() {
     console.log(code.uname);
     const body = { cetab: "001", uname: code.uname };
@@ -76,10 +82,7 @@ export default function ListUsers({ usersData = [], profiles }) {
             title: "Success",
             icon: "success",
             text: res.message,
-          }).then((e) => {
-            // dispatch({ refresh: parseInt(state.refresh) + 1 });
-            //   refreshPage();
-          });
+          }).then((e) => {});
         } else {
           Swal.fire({
             icon: "error",
@@ -103,12 +106,11 @@ export default function ListUsers({ usersData = [], profiles }) {
         <h2 className="text-lg font-bold">Utilisateurs </h2>
       </header>
 
-      {/* <Search  fields={searchFields} onSearch={handleSearch} /> */}
       <Table
         columns={columns}
-        loading={true}
+        loading={state.loading ?? false}
         optional={true}
-        datasourece={usersData}
+        datasourece={state.data ?? []}
         showFilter={{ filter: true }}
         actions={
           <Button href="/users/adduser" type="primary" size="large">
