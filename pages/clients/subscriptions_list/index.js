@@ -1,56 +1,54 @@
 import { useEffect, useReducer, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { Button, Modal } from "antd";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaCheckCircle, FaEdit, FaTrash } from "react-icons/fa";
 import Table from "@/components/Custom/Table";
 import apiClient from "api";
 import Swal from "sweetalert2";
 import UploadFile from "./upload_files";
+import LoaderContainer from "@/components/loader-container";
 
 export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
   const [state, dispatch] = useReducer(reducer, {
     loading: true,
+    uploading: false,
     data: [],
   });
 
   const [files, setFiles] = useState([]);
+  const [pickedUser, setPickedUser] = useState({});
   const [open, setOpen] = useState(false);
 
   const getStatus = (status) => {
     switch (status) {
-      case "01":
+      case 0:
+        return { name: "Pending", color: "orange" };
+      case 1:
         return { name: "Validated", color: "rgba(16, 185, 129, 1)" };
-      case "02":
-        return { name: "Pending", color: "RGB(203, 86, 35)" };
-      case "03":
+      case 2:
         return { name: "Rejected", color: "rgba(239, 68, 68, 1)" };
       default:
         return { name: "Pending", color: "orange" };
     }
   };
 
-  function showDelModal() {
-    setIsModalVisible(true);
-  }
-
   function handleFileChange(e) {
     setFiles((prev) => ({ ...prev, [e.target.name]: e.target.files[0] }));
   }
 
-  const submitFiles = async (e) => {
-    dispatch({ showUploadModal: false, isActivating: true });
+  const submitFiles = async () => {
+    dispatch({ uploading: true });
 
-    var formDatas = Object.entries(files).map((e) => {
-      var file = e[1];
+    var formDatas = Object.entries(files).map((file) => {
+      var file = file[1];
       const formData = new FormData();
 
       formData.append("file", file, file.name);
-      formData.append("type", e[0]);
-      formData.append("cli", rowData.codecli);
-      formData.append("codewal", rowData.codewal);
-      formData.append("uti", localStorage.getItem("uname"));
-      formData.append("utimo", localStorage.getItem("uname"));
+      formData.append("type", file[0]);
+      formData.append("cli", pickedUser.id);
+      formData.append("codewal", pickedUser.accountNumber);
+      formData.append("utimo", localStorage.getItem("uname") ?? "");
 
       return formData;
     });
@@ -58,11 +56,9 @@ export default function Index() {
     var numOfSucesses = 0;
 
     var promises = formDatas.map((e) =>
-      PostData(
-        { method: "POST", url: "/digitalbank/uploadGimacFile", body: e },
+      apiClient({ method: "POST", url: "/payment/fileUpload", body: e }).then(
         (res) => {
-          if (res !== "error" && res.success === "01") {
-          } else {
+          if (res.data.success !== "01") {
             throw new Error("File couldn't be uploaded to server.");
           }
         }
@@ -71,7 +67,10 @@ export default function Index() {
 
     try {
       const result = await Promise.allSettled(promises);
-      dispatch({ isActivating: false });
+      setFiles([]);
+      setPickedUser({});
+
+      dispatch({ uploading: false });
 
       result.forEach((e) => {
         if (e.status === "fulfilled") numOfSucesses = numOfSucesses + 1;
@@ -83,6 +82,7 @@ export default function Index() {
           text: "Files Uploaded Successfully to server.",
           denyButtonText: "Retry",
           icon: "success",
+          confirmButtonColor: "gray",
         }).then(() => {
           window.location.reload();
         });
@@ -92,6 +92,7 @@ export default function Index() {
           text: "File couldn't be uploaded to server.",
           denyButtonText: "Retry",
           icon: "error",
+          confirmButtonColor: "gray",
         }).then(() => {});
       }
     } catch (error) {
@@ -99,12 +100,13 @@ export default function Index() {
         title: "File couldn't be uploaded",
         text: "File couldn't be uploaded to server.",
         denyButtonText: "Retry",
+        confirmButtonColor: "gray",
         icon: "error",
       }).then(() => {});
     }
   };
 
-  function deleteClient() {
+  function showDeleteClientModal(row) {
     Swal.fire({
       title: "Suprimer le Client?",
       text: "Vous ne pourrez pas revenir en arrière!",
@@ -114,7 +116,96 @@ export default function Index() {
       cancelButtonColor: "#d33",
       confirmButtonText: "Oui! Suprimer",
       cancelButtonText: "Annuler",
-    }).then((result) => {});
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(row);
+      }
+    });
+  }
+
+  function showActivateClientModal(row) {
+    Swal.fire({
+      title: "Activer le Client?",
+      text: "Voullez vous activer cette utilisatuer??",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#52c41a",
+      cancelButtonColor: "gray",
+      confirmButtonText: "Oui! Activer",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        activateUser(row);
+      }
+    });
+  }
+
+  async function activateUser(row) {
+    dispatch({ uploading: true });
+
+    let response = await apiClient({
+      method: "POST",
+      url: "/payment/activateAccount",
+      body: {
+        accountNumber: row.accountNumber,
+      },
+    });
+
+    dispatch({ uploading: false });
+
+    if (response.data.statut === "01") {
+      Swal.fire({
+        title: "Client activated Successfully",
+        text: "Client activated Successfully to server.",
+        denyButtonText: "Retry",
+        icon: "success",
+        confirmButtonColor: "gray",
+      }).then(() => {
+        window.location.reload();
+      });
+      return;
+    } else {
+      Swal.fire({
+        title: "Failed",
+        text: "Please upload user documents first",
+        icon: "warning",
+        confirmButtonColor: "gray",
+      });
+    }
+  }
+
+  async function deleteUser(row) {
+    dispatch({ uploading: true });
+
+    let response = await apiClient({
+      method: "POST",
+      url: "/user/deleteUser",
+      body: {
+        accountNumber: row.accountNumber,
+      },
+    });
+
+    dispatch({ uploading: false });
+
+    if (response.data.statut === "01") {
+      Swal.fire({
+        title: "Client activated Successfully",
+        text: "Client activated Successfully to server.",
+        denyButtonText: "Retry",
+        icon: "success",
+        confirmButtonColor: "gray",
+      }).then(() => {
+        window.location.reload();
+      });
+      return;
+    } else {
+      Swal.fire({
+        title: "Failed",
+        text: "Please upload user documents first",
+        icon: "warning",
+        confirmButtonColor: "gray",
+      });
+    }
   }
 
   const columns = [
@@ -159,10 +250,11 @@ export default function Index() {
     },
     {
       title: "Status",
-      key: "id",
-      dataIndex: "id",
-      render: (_, { tag }) => {
-        var statusObj = getStatus(tag);
+      key: "statut",
+      dataIndex: "statut",
+      render: (_, row) => {
+        console.log(row.statut);
+        var statusObj = getStatus(row.statut);
 
         return <div style={{ color: statusObj.color }}>{statusObj.name}</div>;
       },
@@ -172,27 +264,56 @@ export default function Index() {
       key: "sortcode",
       dataIndex: "sortcode",
       filter: true,
-      render: (_, { tags }) => {
-        return (
-          <Button
-            onClick={() => {
-              console.log("Clicked");
-              setOpen(true);
-            }}
-            type="outlined"
-          >
-            Upload Documents
-          </Button>
-        );
+      render: (_, data) => {
+        if (!data.stap) {
+          return (
+            <Button
+              onClick={() => {
+                setPickedUser(data);
+                setOpen(true);
+              }}
+              type="outlined"
+            >
+              Upload Documents
+            </Button>
+          );
+        } else {
+          return (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "green",
+              }}
+            >
+              <p>Files attached</p>
+            </div>
+          );
+        }
       },
     },
     {
       title: "Actions",
       key: "role",
       dataIndex: "role",
-      render: (_, { tag }) => {
+      render: (_, row) => {
         return (
-          <div className="flex space-x-4 w-full">
+          <div className="flex space-x-2 w-full">
+            {row.stap && row.statut === 0 && (
+              <Button
+                icon={
+                  <FaCheckCircle
+                    color="green"
+                    className="text-red-500 inline"
+                    title="Activer"
+                  />
+                }
+                onClick={() => {
+                  showActivateClientModal(row);
+                }}
+              ></Button>
+            )}
             <Button
               icon={
                 <AiOutlineEye
@@ -200,7 +321,7 @@ export default function Index() {
                   title="Consulter"
                 />
               }
-              href={`/users/consult/${tag}`}
+              href={`/users/consult/`}
             />
             <Button
               icon={
@@ -210,7 +331,7 @@ export default function Index() {
                   title="Editer"
                 />
               }
-              href={`/users/edit/${tag}`}
+              href={`/users/edit/`}
             />
             <Button
               icon={
@@ -221,7 +342,7 @@ export default function Index() {
                 />
               }
               onClick={() => {
-                deleteClient();
+                showDeleteClientModal(row);
               }}
             />
           </div>
@@ -229,11 +350,6 @@ export default function Index() {
       },
     },
   ];
-
-  function showDelM(code) {
-    setCode({ uname: code });
-    showDelModal();
-  }
 
   async function fetchData() {
     dispatch({ loading: true });
@@ -243,14 +359,12 @@ export default function Index() {
       url: "/auth/allUsers",
     });
 
-    dispatch({ data: response.data.data || [], loading: false });
+    dispatch({ loading: false, data: response.data.data ?? [] });
   }
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  console.log(state.data);
 
   return (
     <>
@@ -265,18 +379,16 @@ export default function Index() {
         showIndex={true}
         dataSource={state.data ?? []}
         showFilter={{ filter: true }}
-        actions={
-          <Button href="/users/adduser" type="primary" size="large">
-            Ajouter un utilisateur
-          </Button>
-        }
       />
 
       <Modal
         title="Client Attachements"
         centered
         visible={open}
-        onOk={() => setOpen(false)}
+        onOk={() => {
+          setOpen(false);
+          submitFiles();
+        }}
         onCancel={() => setOpen(false)}
         width={800}
       >
@@ -304,6 +416,7 @@ export default function Index() {
           />
         </div>
       </Modal>
+      {state.uploading && <LoaderContainer />}
     </>
   );
 }
