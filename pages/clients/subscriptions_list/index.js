@@ -6,6 +6,7 @@ import Table from "@/components/Custom/Table";
 import apiClient from "api";
 import Swal from "sweetalert2";
 import UploadFile from "./upload_files";
+import Link from "next/link";
 
 export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
@@ -113,7 +114,7 @@ export default function Index() {
       confirmButtonColor: "#52c41a",
       cancelButtonColor: "#d33",
       confirmButtonText: "Oui! Suprimer",
-      cancelButtonText: "Annuler",
+cancelButtonText: "Annuler",
     }).then((result) => {});
   }
 
@@ -157,7 +158,7 @@ export default function Index() {
       dataIndex: "agesou",
       filter: true,
     },
-    {
+{
       title: "Status",
       key: "id",
       dataIndex: "id",
@@ -186,22 +187,26 @@ export default function Index() {
         );
       },
     },
+ 
     {
       title: "Actions",
-      key: "role",
-      dataIndex: "role",
-      render: (_, { tag }) => {
+      key: "id",
+      dataIndex: "id",
+      render: (_, { id }) => {
         return (
           <div className="flex space-x-4 w-full">
+          
+
             <Button
+            href={`/clients/subscriptions_list/action?edit=true&id=${id}`}
               icon={
                 <AiOutlineEye
                   className="text-red-600 inline"
                   title="Consulter"
                 />
               }
-              href={`/users/consult/${tag}`}
             />
+          
             <Button
               icon={
                 <FaEdit
@@ -210,7 +215,7 @@ export default function Index() {
                   title="Editer"
                 />
               }
-              href={`/users/edit/${tag}`}
+              href={`/clients/subscriptions_list/${id}`}
             />
             <Button
               icon={
@@ -281,14 +286,14 @@ export default function Index() {
         width={800}
       >
         <div className="flex items-center justify-center gap-5 flex-row">
-          <UploadFile
+        <UploadFile
             name="Image"
             files={files}
             accessor="image"
             setFiles={setFiles}
             handleFileChange={handleFileChange}
           />
-          <UploadFile
+        <UploadFile
             name="CNI"
             accessor="cni"
             files={files}

@@ -1,7 +1,7 @@
 import { Input } from "antd";
 import React from "react";
 
-const TextInput = ({ name, type, placeholder, value, onChange, onBlur }) => {
+const TextInput = ({ name, type, placeholder, value, onChange, onBlur, disabled =false }) => {
   return type === "password" ? (
     <Input.Password
       placeholder={placeholder}
@@ -15,11 +15,12 @@ const TextInput = ({ name, type, placeholder, value, onChange, onBlur }) => {
     <input
       type={type ? "text" : type}
       placeholder={placeholder}
+      disabled={disabled}
       name={name}
       onChange={onChange}
       onBlur={onBlur}
       value={value}
-      className="w-full !bg-gray-100 !bg-opacity-50 rounded !border !border-gray focus:!border-indigo-500 focus:!bg-white focus:!ring-2 focus:!ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+      className="!w-full !bg-gray-100 !bg-opacity-50 rounded !border !border-gray focus:!border-indigo-500 focus:!bg-white focus:!ring-2 focus:!ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
     />
   );
 };

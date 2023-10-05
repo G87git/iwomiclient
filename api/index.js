@@ -5,7 +5,7 @@ const apiClient = ({ method, url, body }) => {
   // axios.defaults.baseURL = "http://57.128.163.118:8081/api/v2/";
 
   axios.defaults.headers= { 
-    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTY3ODM0NTYiLCJpYXQiOjE2OTYyNDAxOTYsImV4cCI6MTY5NjM4NDE5Nn0.ECCrj03o3KJEbNvN29spZ4l6dlA13va2irs-7VKk3F8', 
+    // 'Authorization': "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTY3ODM0NTYiLCJpYXQiOjE2OTY0MDk2ODksImV4cCI6MTY5NjU1MzY4OX0.Njt75RSICcxj65OUpcnCI8k-IilxdgfbcfuBwOgnqUs", 
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin' : '*',
   'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',

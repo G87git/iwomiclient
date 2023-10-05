@@ -94,6 +94,31 @@ export default function Login() {
   //   }
   // };
 
+  const loginUser = async (user) => {
+    dispatch({loading: true})
+    const { phone, password } = user;
+
+    console.log("USER", user);
+    const body = {
+      phone: phone,
+      password: password,
+    };
+
+    const response = await apiClient({
+      method: "POST",
+      url: "/auth/authenticate",
+      body,
+    });
+
+    dispatch({ loading: false, data: response.data });
+    console.log("DATA", state.data)
+
+    if (response.data.status === "01") {
+      console.log("RESPONSE: ", response.data);
+      localStorage.setItem("token", response.data.token);
+    }
+  };
+
   return (
     <div className="relative">
       <img
@@ -108,26 +133,29 @@ export default function Login() {
             </div>
 
             <Form
-              // onFinish={loginUser}
-              // form={loginForm}
+              onFinish={loginUser}
+              form={loginForm}
               name="login"
               layout="vertical"
             >
               <Form.Item
-                label="Username"
-                name="uname"
+                label="Phone Number"
+                name="phone"
                 rules={[
-                  { required: true, message: "Please input your username!" },
+                  {
+                    required: true,
+                    message: "Please input your phone number!",
+                  },
                 ]}
               >
                 <Input
                   prefix={<UserOutlined className="site-form-item-icon" />}
-                  placeholder="Username"
+                  placeholder="Phone Number"
                 />
               </Form.Item>
               <Form.Item
                 label="Password"
-                name="pass"
+                name="password"
                 rules={[
                   { required: true, message: "Please input your password!" },
                 ]}

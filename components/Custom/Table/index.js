@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import AntTable from "antd/lib/table";
 import Loader from "react-loader-advanced";
 import { Spin } from "antd";
@@ -20,6 +20,7 @@ export default function Table(props) {
   });
 
   const [searchText, setSearchText] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   let columns = props.columns;
   let dataSource = [];
@@ -32,9 +33,9 @@ export default function Table(props) {
     }));
   }
 
-  // useEffect(() => {
-  //   setFilteredData(filterData(data, searchText));
-  // }, [data, searchText]);
+  useEffect(() => {
+    setFilteredData(filterData(props.dataSource, searchText));
+  }, [props.dataSource, searchText]);
 
   function handlefilterChange({ target: { name, value } }) {
     dispatch({ filterObj: { ...state.filterObj, [name]: value } });
@@ -216,8 +217,8 @@ export default function Table(props) {
       <Loader show={props.loader} message={spinner} contentBlur={0.1}>
         <AntTable
           columns={columns}
-          dataSource={props.dataSource}
-          // dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
+          // dataSource={props.dataSource}
+          dataSource={filteredData?.map((item, index) => ({ ...item, index: index + 1 }))}
           size="middle"
           loading={props.loading}
           style={{ overflowX: "auto" }}

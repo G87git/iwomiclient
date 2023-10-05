@@ -10,6 +10,7 @@ function FormField({
   type = "text",
   placeholder,
   textarea = false,
+  disabled,
 }) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
@@ -31,8 +32,10 @@ function FormField({
           <TextInput
             onBlur={() => setFieldTouched(name)}
             onChange={(e) => setFieldValue(name, e.target.value)}
-            // value={values[name]}
+
+            value={label? label:values[name]}
             placeholder={placeholder}
+            disabled={disabled}
             type={type}
             name={name}
           />
