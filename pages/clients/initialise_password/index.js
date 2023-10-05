@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useReducer } from "react";
 import Table from "../../../components/Custom/Table/index";
-import { Button, Result, Modal } from "antd";
+import { Button, Modal } from "antd";
 import apiClient from "api";
-import { BiCircle, BiEdit } from "react-icons/bi";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
 import Swal from "sweetalert2";
 import { MdOutlineResetTv } from "react-icons/md";
-const { confirm } = Modal;
+import LoaderContainer from "@/components/loader-container";
 
 export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
   const [state, dispatch] = useReducer(reducer, {});
 
-  const showPropsConfirm = () => {
+  const showPropsConfirm = (data) => {
     Swal.fire({
       title: "Initialise Password?",
       text: "You won't be able to revert this!",
@@ -22,8 +20,47 @@ export default function Index() {
       confirmButtonColor: "#52c41a",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes! Initialise",
-    }).then((result) => {});
+    }).then((result) => {
+      if (result.isConfirmed) {
+        initPwd(data);
+        return;
+      }
+    });
   };
+
+  async function initPwd(data) {
+    dispatch({ initialising: true });
+
+    let response = await apiClient({
+      method: "POST",
+      url: "/payment/initpassword",
+      body: {
+        AccountNum: data.accountNumber,
+      },
+    });
+
+    dispatch({ initialising: false });
+
+    if (response.data.status === "01") {
+      Swal.fire({
+        title: "Pin initialised Successfully",
+        text: "Pin initialised Successfully to server.",
+        denyButtonText: "Retry",
+        icon: "success",
+        confirmButtonColor: "gray",
+      }).then(() => {
+        window.location.reload();
+      });
+      return;
+    } else {
+      Swal.fire({
+        title: "Failed",
+        text: "Please upload user documents first",
+        icon: "warning",
+        confirmButtonColor: "gray",
+      });
+    }
+  }
 
   const columns = [
     {
@@ -64,24 +101,21 @@ export default function Index() {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: (_, value) => {
-        return (
+      render: (_, data) => {
+        return data.statut === 1 ? (
           <Button
             type="outlined"
-            onClick={showPropsConfirm}
+            onClick={() => showPropsConfirm(data)}
             className="!rounded"
           >
             <MdOutlineResetTv />
           </Button>
+        ) : (
+          <div style={{ color: "orange" }}>User not active</div>
         );
       },
     },
   ];
-
-  function showDelM(code) {
-    setCode({ uname: code });
-    showDelModal();
-  }
 
   async function fetchData() {
     dispatch({ loading: true });
@@ -93,8 +127,6 @@ export default function Index() {
 
     dispatch({ data: response.data.data || [], loading: false });
   }
-
-  console.log("data", state.data);
 
   useEffect(() => {
     fetchData();
@@ -120,6 +152,7 @@ export default function Index() {
           }
         />
       </div>
+      {state.initialising && <LoaderContainer />}
     </>
   );
 }
