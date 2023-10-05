@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Card, Modal } from "antd";
+import { Form, Card, Modal, Alert } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import Button from "@/components/button";
@@ -114,8 +114,15 @@ export default function Login() {
     console.log("DATA", state.data)
 
     if (response.data.status === "01") {
-      console.log("RESPONSE: ", response.data);
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.data.data.token);
+      if(response.data.data.role === "ROLE_ADMIN"){
+
+        router.push("/");
+      }else{
+        <Alert>
+          Not Allow to consume this service
+        </Alert>
+      }
     }
   };
 

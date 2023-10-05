@@ -1,22 +1,12 @@
 import {
   UserOutlined,
-  UploadOutlined,
   SettingOutlined,
-  UserGroupIcon,
   SafetyCertificateOutlined,
-  GroupOutlined,
   DashboardOutlined,
   TransactionOutlined,
-  LikeOutlined,
   MoneyCollectOutlined,
-  TeamOutlined,
 } from "@ant-design/icons";
 
-import { HomeIcon } from "@heroicons/react/solid";
-import { BiDollar, BiMoney, BiStats, BiTransferAlt } from "react-icons/bi";
-import { BsBank, BsClock } from "react-icons/bs";
-import { FaMoneyBill, FaToolbox, FaUser } from "react-icons/fa";
-import { MdDashboard, MdGroup, MdMoney, MdPayments } from "react-icons/md";
 
 const routes = [
   {
@@ -66,18 +56,18 @@ const routes = [
         title: "Initialise Pin",
         path: "/clients/initialise_pin",
       },
-      {
-        title: "Account Attachement",
-        path: "/clients/account_attachement",
-      },
-      {
-        title: "Pending Attachement",
-        path: "/clients/pending_attachements",
-      },
-      {
-        title: "Rejected Clients",
-        path: "/clients/rejected_clients",
-      },
+      // {
+      //   title: "Account Attachement",
+      //   path: "/clients/account_attachement",
+      // },
+      // {
+      //   title: "Pending Attachement",
+      //   path: "/clients/pending_attachements",
+      // },
+      // {
+      //   title: "Rejected Clients",
+      //   path: "/clients/rejected_clients",
+      // },
       {
         title: "Deleted Clients",
         path: "/clients/deleted_clients",
@@ -89,7 +79,7 @@ const routes = [
     icon: <TransactionOutlined className="!text-primary" />,
     subMenu: [
       {
-        title: "Transfer",
+        title: "Transaction History",
         path: "/transfers/history",
         icon: <MoneyCollectOutlined />,
       },

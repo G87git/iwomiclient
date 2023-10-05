@@ -3,8 +3,9 @@ import FormButton from "@/components/Form/FormButton";
 import FormField from "@/components/Form/FormField";
 import SelectFormField from "@/components/Form/SelectField";
 import { Button, Tabs } from "antd";
+import apiClient from "api";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useReducer } from "react";
 import * as yup from "yup";
 
 const { TabPane } = Tabs;
@@ -44,7 +45,14 @@ const validator = yup.object({
   expDate: yup.string(),
   numIMEI: yup.string().required("IMEI number must be provided"),
 });
+
 const Index = () => {
+  const reducer = (prevState, action) => ({ ...prevState, ...action });
+  const [state, dispatch] = useReducer(reducer, {
+    loading: true,
+    data: [],
+  });
+
   const onChange = (key) => {
     console.log(key);
   };
@@ -53,18 +61,46 @@ const Index = () => {
     console.log(values);
   };
 
-  const router = useRouter();
-  const { query } = router;
+  const { query } = useRouter();
 
   const { edit, id } = query;
 
+  console.log(query);
+
+  async function getUser() {
+    dispatch({ uploading: true });
+
+    let response = await apiClient({
+      method: "POST",
+      url: `/user/userInfo`,
+      body: {
+        id: id,
+      },
+    });
+
+    dispatch({ uploading: false });
+
+    if (response.data.statut === "01") {
+      console.log(response.data.data);
+      dispatch({ data: response.data.data });
+    }
+  }
+
+  useEffect(() => {
+    if (id) {
+      getUser();
+    }
+  }, [id]);
+
   const isDisabled = () => {
     if (edit === "true") {
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   };
+
+  let user = state.data;
 
   return (
     <div>
@@ -87,17 +123,37 @@ const Index = () => {
                     </h2>
                     <div className="grid md:grid-cols-2">
                       <p>Name *</p>
-                      <FormField name="name" label="12kk3" disabled={isDisabled()} />
+                      <FormField
+                        name="name"
+                        label={`${user.firstname} ${user.lastname} `}
+                        disabled={isDisabled()}
+                      />
                     </div>
                     <div className="grid md:grid-cols-2">
-                      <p>Code Client *</p>
-                      <FormField name="codeClient" disabled={true} />
+                      <p>Sort Code *</p>
+                      <FormField
+                        name="codeClient"
+                        label={user.sortCode}
+                        disabled={true}
+                      />
                     </div>
                     <div className="grid md:grid-cols-2">
                       <p>Telephone *</p>
-                      <FormField name="phone" disabled={isDisabled()} />
+                      <FormField
+                        name="phone"
+                        label={user.phone}
+                        disabled={isDisabled()}
+                      />
                     </div>
-                    <div className="grid md:grid-cols-2 ">
+                    <div className="grid md:grid-cols-2">
+                      <p>Profession *</p>
+                      <FormField
+                        name="phone"
+                        label={user.proffession}
+                        disabled={isDisabled()}
+                      />
+                    </div>
+                    {/* <div className="grid md:grid-cols-2 ">
                       <p>Profile *</p>
                       <SelectFormField
                         name="profile"
@@ -105,7 +161,7 @@ const Index = () => {
                         options={[{ value: 1, label: "one" }]}
                         disabled={isDisabled()}
                       />
-                    </div>
+                    </div> */}
                   </div>
                   <div className="border !border-[#1A1A1A40] py-6 px-4 relative">
                     <h2 className="absolute text-primary -top-5 text-lg bg-white px-2">
@@ -114,19 +170,31 @@ const Index = () => {
 
                     <div className="grid md:grid-cols-2 ">
                       <p>Address *</p>
-                      <FormField name="address" disabled={isDisabled()} />
+                      <FormField
+                        name="address"
+                        label={user.residentialAddresse}
+                        disabled={isDisabled()}
+                      />
                     </div>
                     <div className="grid md:grid-cols-2 ">
                       <p>Email </p>
-                      <FormField name="email" disabled={isDisabled()} />
+                      <FormField
+                        name="email"
+                        label={user.email}
+                        disabled={isDisabled()}
+                      />
                     </div>
                     <div className="grid md:grid-cols-2 ">
                       <p>Date of Birth </p>
-                      <FormField name="dob" disabled={true} />
+                      <FormField name="dob" label={user.dob} disabled={true} />
                     </div>
                     <div className="grid md:grid-cols-2 ">
-                      <p>Place of Birth </p>
-                      <FormField name="pob" disabled={true} />
+                      <p>Country </p>
+                      <FormField
+                        name="pob"
+                        label={user.country}
+                        disabled={true}
+                      />
                     </div>
                   </div>
                 </div>

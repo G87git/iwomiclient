@@ -1,281 +1,127 @@
-import React, { useEffect, useState } from "react";
-import { useReducer } from "react";
-
-import tableExport from "antd-table-export";
-import Table from "../../../components/Custom/Table/index";
-import { Link } from "react-router-dom";
-import { FaTrash } from "react-icons/fa";
-import Form from "../../../components/Form/Form";
-import SelectFormField from "../../../components/Form/SelectField";
-import FormField from "../../../components/Form/FormField";
-import * as yup from "yup";
-import FormButton from "../../../components/Form/FormButton";
-import RTable from "@/components/RTable";
+import { useEffect, useReducer } from "react";
+import { AiOutlineEye } from "react-icons/ai";
 import { Button } from "antd";
-
-const initialValues = {
-  clientCode: "",
-  phoneNumber: "",
-  dateModified: "",
-  subsBranch: "",
-  status: "",
-};
-
-const validator = yup.object({
-  clientCode: yup.string(),
-  phoneNumber: yup.string(),
-  dateModified: yup.string(),
-  subsBranch: yup.string(),
-  status: yup.string(),
-});
+import { FaEdit, FaTrash } from "react-icons/fa";
+import Table from "@/components/Custom/Table";
+import apiClient from "api";
 
 export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
-  const [state, dispatch] = useReducer(reducer, {});
-  const [search, setSearch] = useState("");
-  const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-  };
+
+  const [state, dispatch] = useReducer(reducer, {
+    loading: true,
+    data: [],
+  });
+
+  function showDelModal() {
+    setIsModalVisible(true);
+  }
 
   const columns = [
     {
-      title: "Client Name",
-      dataIndex: "clientName",
-      key: "clientName",
-
-      sorter: (a, b) => a.clientName.localeCompare(b.clientName),
+      title: "First Name",
+      key: "firstname",
+      dataIndex: "firstname",
+      filter: true,
     },
     {
-      title: " Client Code",
-      dataIndex: "clientCode",
-      key: "clientCode",
-
-      sorter: (a, b) => a.clientCode - b.clientCode,
+      title: "Last Name",
+      key: "lastname",
+      dataIndex: "lastname",
+      filter: true,
     },
     {
-      title: "Product Code",
-      dataIndex: "productCode",
-      key: "productCode",
-
-      sorter: (a, b) => a.productCode - b.productCode,
+      title: "Account Numer",
+      key: "accountNumber",
+      dataIndex: "accountNumber",
+      filter: true,
     },
+    { title: "Email", key: "email", dataIndex: "email", filter: true },
+    { title: "Phone", key: "phone", dataIndex: "phone", filter: true },
     {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-
-      sorter: (a, b) => a.phoneNumber - b.phoneNumber,
+      title: "Profession",
+      key: "proffession",
+      dataIndex: "proffession",
+      filter: true,
     },
+    { title: "Creation Date", key: "creationDate", dataIndex: "creationDate" },
     {
-      title: "Email",
-      dataIndex: "Email",
-      key: "Email",
-
-      sorter: (a, b) => a.Email.localeCompare(b.Email),
+      title: "Residencial Address",
+      key: "residentialAddresse",
+      dataIndex: "residentialAddresse",
+      filter: true,
     },
-    {
-      title: "Subscription Branch",
-      dataIndex: "subsBranch",
-      key: "subsBranch",
-
-      sorter: (a, b) => a.subsBranch.localeCompare(b.subsBranch),
-    },
-    {
-      title: "Date Modified",
-      dataIndex: "dateModified",
-      key: "dateModified",
-
-      sorter: (a, b) => {
-        const dateA = new Date(a.dateModified);
-        const dateB = new Date(b.dateModified);
-        return dateA.getTime() - dateB.getTime();
-      },
-    },
-    {
-      title: " Status",
-      dataIndex: "status",
-      key: "status",
-      sorter: (a, b) => a.status.localeCompare(b.status),
-      render: (status) => {
-        return status === "active" ? (
-          <Button type="primary" className="!cursor-default !rounded">
-            {status}
-          </Button>
-        ) : (
-          <Button type="secondary" className="!cursor-default !rounded">
-            {status}
-          </Button>
-        );
-      },
-    },
+    // {
+    //   title: "Status",
+    //   key: "action",
+    //   dataIndex: "action",
+    //   Cell: ({ row: { original } }) => {
+    //     return (
+    //       <div className="flex space-x-4 w-full">
+    //         <Button
+    //           icon={
+    //             <AiOutlineEye
+    //               className="text-red-600 inline"
+    //               title="Consulter"
+    //             />
+    //           }
+    //           href={`/users/consult/${original.uname}`}
+    //         />
+    //         <Button
+    //           icon={<FaEdit className="text-green-600 inline" title="Editer" />}
+    //           href={`/users/edit/${original.uname}`}
+    //         />
+    //         <Button
+    //           icon={
+    //             <FaTrash className="text-red-500 inline" title="Supprimer" />
+    //           }
+    //           onClick={() => {
+    //             showDelM(original.uname);
+    //           }}
+    //         />
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
-  const data = [
-    {
-      clientName: "John Smith",
-      clientCode: "1234",
-      productCode: "5678",
-      phoneNumber: 1234567890,
-      Email: "johnsmith@example.com",
-      subsBranch: "New Yorkx",
-      dateModified: "2020-12-15",
-      status: "active",
-    },
-    {
-      clientName: "Jane Doe",
-      clientCode: "5678",
-      productCode: "9012",
-      phoneNumber: 9876543210,
-      Email: "janedoe@example.com",
-      subsBranch: "Los Angeles",
-      dateModified: "2020-11-20",
-      status: "inactive",
-    },
-    {
-      clientName: "Mike Johnson",
-      clientCode: "9012",
-      productCode: "3456",
-      phoneNumber: 2345678901,
-      Email: "mikejohnson@example.com",
-      subsBranch: "Chicago",
-      dateModified: "2020-10-25",
-      status: "active",
-    },
-    {
-      clientName: "Sarah Wilson",
-      clientCode: "3456",
-      productCode: "7890",
-      phoneNumber: 8765432109,
-      Email: "sarahwilson@example.com",
-      subsBranch: "Houston",
-      dateModified: "2020-09-30",
-      status: "inactive",
-    },
-    {
-      clientName: "David Brown",
-      clientCode: "7890",
-      productCode: "1234",
-      phoneNumber: 7654321098,
-      Email: "davidbrown@example.com",
-      subsBranch: "Philadelphia",
-      dateModified: "2020-08-05",
-      status: "active",
-    },
-    {
-      clientName: "Emily Davis",
-      clientCode: "2345",
-      productCode: "6789",
-      phoneNumber: 6543210987,
-      Email: "emilydavis@example.com",
-      subsBranch: "Phoenix",
-      dateModified: "2020-07-10",
-      status: "inactive",
-    },
-    {
-      clientName: "Michael Wilson",
-      clientCode: "6789",
-      productCode: "0123",
-      phoneNumber: 5432109876,
-      Email: "michaelwilson@example.com",
-      subsBranch: "San Antonio",
-      dateModified: "2020-06-15",
-      status: "active",
-    },
-    {
-      clientName: "Jessica Taylor",
-      clientCode: "0123",
-      productCode: "4567",
-      phoneNumber: 4321098765,
-      Email: "jessicataylor@example.com",
-      subsBranch: "San Diego",
-      dateModified: "2020-05-20",
-      status: "inactive",
-    },
-    {
-      clientName: "Brian Anderson",
-      clientCode: "4567",
-      productCode: "8901",
-      phoneNumber: 3210987654,
-      Email: "briananderson@example.com",
-      subsBranch: "Dallas",
-      dateModified: "2020-04-25",
-      status: "active",
-    },
-    {
-      clientName: "Amy Martinez",
-      clientCode: "8901",
-      productCode: "2345",
-      phoneNumber: 2109876543,
-      Email: "amymartinez@example.com",
-      subsBranch: "San Jose",
-      dateModified: "2020-03-30",
-      status: "inactive",
-    },
-    {
-      clientName: "Christopher Lee",
-      clientCode: "3456",
-      productCode: "6789",
-      phoneNumber: 1098765432,
-      Email: "christopherlee@example.com",
-      subsBranch: "Austin",
-      dateModified: "2020-02-05",
-      status: "active",
-    },
-    {
-      clientName: "Daniel Rodriguez",
-      clientCode: "0123",
-      productCode: "4567",
-      phoneNumber: 987654321,
-      Email: "danielrodriguez@example.com",
-      subsBranch: "San Francisco",
-      dateModified: "2019-12-15",
-      status: "active",
-    },
-    {
-      clientName: "Michelle Walker",
-      clientCode: "4567",
-      productCode: "8901",
-      phoneNumber: 876543210,
-      Email: "michellewalker@example.com",
-      subsBranch: "Indianapolis",
-      dateModified: "2019-11-20",
-      status: "inactive",
-    },
-    {
-      clientName: "Andrew Wilson",
-      clientCode: "8901",
-      productCode: "2345",
-      phoneNumber: 765432109,
-      Email: "andrewwilson@example.com",
-      subsBranch: "Seattle",
-      dateModified: "2019-10-25",
-      status: "active",
-    },
-  ];
+  function showDelM(code) {
+    setCode({ uname: code });
+    showDelModal();
+  }
+
+  async function fetchData() {
+    dispatch({ loading: true });
+
+    let response = await apiClient({
+      method: "get",
+      url: "payment/deletedAccounts",
+    });
+
+    dispatch({ data: response.data.data || [], loading: false });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  console.log(state.data);
 
   return (
     <>
       <header className="flex space-x-4 mb-4 justify-between">
-        <h2 className="text-lg font-bold font">Initialise Password </h2>
+        <h2 className="text-lg font-bold">Deleted Clients </h2>
       </header>
-      <div className={"table-custom"} style={{ overflowX: "auto" }}>
-        <Table
-          columns={columns}
-          dataSource={data}
-          loading={state.loading}
-          showIndex={true}
-          showFilter={true}
-          className={""}
-          optional={true}
-        />
-        {/* <RTable
-            loading={false}
-            hideCheckbox
-            columns={columns}
-            data={data}
-          /> */}
-      </div>
+
+      <Table
+        columns={columns}
+        loading={state.loading ?? false}
+        optional={true}
+        showIndex={true}
+        dataSource={state.data ?? []}
+        showFilter={{ filter: true }}
+        
+      />
     </>
   );
 }

@@ -95,7 +95,7 @@ export default function Index() {
 
     let response = await apiClient({
       method: "get",
-      url: "/auth/allUsers",
+      url: "payment/pendingAccounts",
     });
 
     dispatch({ data: response.data.data || [], loading: false });

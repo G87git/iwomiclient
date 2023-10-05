@@ -66,7 +66,7 @@ export default function Index() {
         filter: true,
         render: (status)=>{
           return (
-            <Button type="primary" className="!cursor-default !rounded">status</Button>
+            <Button type="primary" className="!cursor-default !rounded">{status}</Button>
           )
         }
       },
@@ -97,7 +97,7 @@ export default function Index() {
 
     let response = await apiClient({
       method: "get",
-      url: "/auth/allUsers",
+      url: "payment/pendingAccounts",
     });
 
     dispatch({ data: response.data.data || [], loading: false });

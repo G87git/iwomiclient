@@ -13,7 +13,7 @@ export default function Index() {
   const reducer = (prevState, action) => ({ ...prevState, ...action });
   const [state, dispatch] = useReducer(reducer, {});
 
-  const showPropsConfirm = () => {
+  const showPropsConfirm = (value) => {
     Swal.fire({
       title: "Initialise Pin?",
       text: "You won't be able to revert this!",
@@ -22,8 +22,46 @@ export default function Index() {
       confirmButtonColor: "#52c41a",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes! Initialise",
-    }).then((result) => {});
+    }).then((result) => {
+      if (result.isConfirmed) {
+        initialisePin(value.accountNumber);
+      }
+    });
   };
+
+  async function initialisePin(id) {
+    dispatch({ uploading: true });
+
+    let response = await apiClient({
+      method: "POST",
+      url: "/payment/initpin",
+      body: {
+        AccountNum: id,
+      },
+    });
+
+    dispatch({ uploading: false });
+
+    if (response.data.status === "01") {
+      Swal.fire({
+        title: "Account initialised Successfully",
+        text: "Account initialised Successfully to server.",
+        denyButtonText: "Retry",
+        icon: "success",
+        confirmButtonColor: "gray",
+      }).then(() => {
+        window.location.reload();
+      });
+      return;
+    } else {
+      Swal.fire({
+        title: "Failed",
+        text: "Please upload user documents first",
+        icon: "warning",
+        confirmButtonColor: "gray",
+      });
+    }
+  }
 
   const columns = [
     {
@@ -65,15 +103,19 @@ export default function Index() {
       dataIndex: "action",
       key: "action",
       render: (_, value) => {
-        return (
-          <Button
-            type="outlined"
-            onClick={showPropsConfirm}
-            className="!rounded"
-          >
-            <MdOutlineResetTv />
-          </Button>
-        );
+        if (value.statut === 1) {
+          return (
+            <Button
+              type="outlined"
+              onClick={() => showPropsConfirm(value)}
+              className="!rounded"
+            >
+              <MdOutlineResetTv />
+            </Button>
+          );
+        } else {
+          return <p style={{color: "orange"}}>Activate Account</p>;
+        }
       },
     },
   ];
