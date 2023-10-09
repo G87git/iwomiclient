@@ -112,7 +112,7 @@ export default function Table(props) {
   return (
     <div className="space-y-2">
       <div className="py-6 px-8 pb-3 bg-white rounded mb-8">
-        <div className="row grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
+        <div className="row grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 z-4 2xl:grid-cols-5 gap-4">
           {props.columns
             .filter((e) => e.filter === true)
             .map((column, i) => {

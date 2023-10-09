@@ -5,12 +5,12 @@ const apiClient = ({ method, url, body }) => {
   // axios.defaults.baseURL = "http://57.128.163.118:8081/api/v2/";
 
   axios.defaults.headers = {
-    Authorization: localStorage.getItem('token'),
     "Content-Type": "application/json",
-    // "Access-Control-Allow-Origin": "*",
-    // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    Authorization:
+      localStorage.getItem("token") ??
+      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMzc2Nzc1MzAzMTgiLCJpYXQiOjE2OTY4NTg0MzksImV4cCI6MTY5NzAwMjQzOX0.eiPZVHoDbgSQcApVjnuht9gYHmUFj3Nl13UekvBwF-c",
   };
-  
+
   return axios({ method, url, data: body });
 };
 

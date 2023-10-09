@@ -29,7 +29,7 @@ export default function TransferHistory() {
       method: "get",
       url: "/payment/listtrans",
     });
-    dispatch({ data: response.data.data || [], loading: false });
+    dispatch({ data: response.data.data?.reverse() || [], loading: false });
   }
 
   useEffect(() => {
@@ -42,33 +42,26 @@ export default function TransferHistory() {
       dataIndex: "id",
       key: "id",
       filter: true,
-      
     },
     {
       title: "Sender Wallet",
       dataIndex: "sourceAccountId",
       key: "sourceAccountId",
       filter: true,
-      
     },
     {
       title: "Reciever Wallet",
       dataIndex: "targetAccountId",
       key: "targetAccountId",
       filter: true,
-      
     },
     {
       title: "Transaction Type",
       dataIndex: "transTyp",
       key: "transTyp",
-      
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      
+      render: (_, data) => {
+        return <p>{data.transTyp.toUpperCase()}</p>;
+      },
     },
     {
       title: "Initiation Date",
@@ -84,17 +77,21 @@ export default function TransferHistory() {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      Cell: ({ value }) => {
-        console.log(value);
+      render: (_, value) => {
         return (
           <NumericFormat
-            value={value?.data.amount}
+            value={value?.amount}
             displayType="text"
             thousandSeparator=" "
             suffix="XAF"
           />
         );
       },
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
     },
     {
       title: "Action",

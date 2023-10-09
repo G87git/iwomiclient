@@ -80,7 +80,17 @@ const routes = [
     subMenu: [
       {
         title: "Transaction History",
-        path: "/transfers/history",
+        path: "/transactions/history",
+        icon: <MoneyCollectOutlined />,
+      },
+      {
+        title: "Deposit",
+        path: "/transactions/deposit",
+        icon: <MoneyCollectOutlined />,
+      },
+      {
+        title: "Withdrawal",
+        path: "/transactions/withdrawal",
         icon: <MoneyCollectOutlined />,
       },
     ],
